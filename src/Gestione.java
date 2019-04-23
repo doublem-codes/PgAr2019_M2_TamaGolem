@@ -4,18 +4,19 @@ public class Gestione {
     private int maxElementi = 10;
     private int minElementi = 3;
 
-    Partita partita = new Partita();
+    Partita partiaN = new Partita();
 
     public void newPartita(){
-        String play1 = it.unibs.fp.mylib.InputDati.leggiStringa("inserire nome giocatore 1");
-        String play2 = it.unibs.fp.mylib.InputDati.leggiStringa("inserire nome giocatore 2");
+        String play1 = it.unibs.fp.mylib.InputDati.leggiStringaNonVuota("inserire nome giocatore 1");
+        String play2 = it.unibs.fp.mylib.InputDati.leggiStringaNonVuota("inserire nome giocatore 2");
 
         int numeroElemnti = it.unibs.fp.mylib.InputDati.leggiIntero("inserire numero elementi",minElementi,maxElementi);
         ArrayList<String> nomeElemnti = new ArrayList<>();
         for (int index =0 ; index < numeroElemnti ; index++){
             String nome = it.unibs.fp.mylib.InputDati.leggiStringaNonVuota("inserire nome dell'elemento numero");
+            nomeElemnti.add(nome);
         }
-        
+        partiaN.SetPartita(numeroElemnti,nomeElemnti,play1,play2);
     }
 
 

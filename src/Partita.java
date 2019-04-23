@@ -7,6 +7,7 @@ public class Partita {
     private int numeroPietreSacca;
     private int numeroPietreTipoSacca;
 
+
     private String player1;
     ArrayList<Golem> player1Golem = new ArrayList<>();
 
