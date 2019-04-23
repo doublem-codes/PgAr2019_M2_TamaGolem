@@ -23,8 +23,9 @@ public class Partita {
         this.numeroPietreSacca = ((2 * numeroGolem * numeroPietre)/numeroElementi)*(numeroElementi);
         this.numeroPietreTipoSacca = (numeroPietreSacca / numeroPietre);
         this.nomeElementi = nomeElementi;
-        this.sacca = setSacca();
-
+        //this.sacca = setSacca();
+        //this.player1Golem = setGolem();
+        //this.player2Golem = setGolem();
     }
 
     public int getNumeroElementi() {
@@ -61,15 +62,8 @@ public class Partita {
         return nomeElementi;
     }
 
-
-
-    private ArrayList<String> setSacca(){
-        ArrayList<String> partial = new ArrayList<>();
-        for (int i=0 ; i<this.numeroPietreSacca;i++){
-            for(int index = 0 ; index <this.numeroPietreTipoSacca; index++){
-                partial.add(nomeElementi.get(i));
-            }
-        }
-        return  partial;
+    public void setSacca(ArrayList<String> sacca) {
+        this.sacca = sacca;
     }
+
 }
