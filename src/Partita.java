@@ -7,18 +7,14 @@ public class Partita {
     private int numeroPietreSacca;
     private int numeroPietreTipoSacca;
 
-
     private String player1;
-    ArrayList<Golem> player1Golem = new ArrayList<>();
-
     private String player2;
-    ArrayList<Golem> player2Golem = new ArrayList<>();
+    private ArrayList<Golem> player1Golem = new ArrayList<>();
+    private ArrayList<Golem> player2Golem = new ArrayList<>();
+    private ArrayList<String> sacca = new ArrayList<>();
+    private ArrayList<String> nomeElementi = new ArrayList<>();
 
-    ArrayList<String> sacca = new ArrayList<>();
-    ArrayList<String> nomeElementi = new ArrayList<>();
-
-
-    public void SetPartita(int numeroElementi , ArrayList<String> nomeElementi,String player1,String player2){
+    public void SetPartita(int numeroElementi , ArrayList<String> nomeElementi, String player1, String player2){
         this.player1 = player1;
         this.player2 = player2;
         this.numeroElementi = numeroElementi;
@@ -31,10 +27,48 @@ public class Partita {
 
     }
 
+    public int getNumeroElementi() {
+        return numeroElementi;
+    }
+    public int getNumeroGolem() {
+        return numeroGolem;
+    }
+    public int getNumeroPietre() {
+        return numeroPietre;
+    }
+    public int getNumeroPietreSacca() {
+        return numeroPietreSacca;
+    }
+    public int getNumeroPietreTipoSacca() {
+        return numeroPietreTipoSacca;
+    }
+    public String getPlayer1() {
+        return player1;
+    }
+    public String getPlayer2() {
+        return player2;
+    }
+    public ArrayList<Golem> getPlayer1Golem() {
+        return player1Golem;
+    }
+    public ArrayList<Golem> getPlayer2Golem() {
+        return player2Golem;
+    }
+    public ArrayList<String> getSacca() {
+        return sacca;
+    }
+    public ArrayList<String> getNomeElementi() {
+        return nomeElementi;
+    }
+
+
+
     private ArrayList<String> setSacca(){
         ArrayList<String> partial = new ArrayList<>();
-        for(int index = 0 ; index <this.numeroPietreTipoSacca; index++){
-            partial.add(nomeElementi.get(0));
+        for (int i=0 ; i<this.numeroPietreSacca;i++){
+            for(int index = 0 ; index <this.numeroPietreTipoSacca; index++){
+                partial.add(nomeElementi.get(i));
+            }
         }
         return  partial;
     }
