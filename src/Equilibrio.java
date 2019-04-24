@@ -3,22 +3,20 @@ import java.util.Random;
 
 public class Equilibrio {
     Random random = new Random();
-
+    private int[][] iterazioneElementi;
     Partita partita = new Partita();
 
 
     public void generaEquilibrio() {
-        inserisciElementi(2);//partita.getNumeroElementi()
+        inserisciElementi(5);//partita.getNumeroElementi()
+        printMatrix(iterazioneElementi);
 
     }
 
 
 
     private boolean inserisciElementi(int numElementi) {
-
-        int[][] iterazioneElementi = new int[numElementi][numElementi];
-
-
+        iterazioneElementi = new int[numElementi][numElementi];
         //danneggia
         for (int i = 0; i < numElementi; i++) {
             iterazioneElementi[i] = danneggia(numElementi);
@@ -26,9 +24,16 @@ public class Equilibrio {
 
         //subisce
         for (int i = 0; i < numElementi; i++) {
-            iterazioneElementi[i] = subisce(numElementi,iterazioneElementi[i]);
+            iterazioneElementi[i] = subisce(iterazioneElementi[i]);
         }
-
+        //azzera diagonale
+        for(int i=0; i<numElementi; i++){
+            for(int j=0; j<numElementi; j++){
+                if(i==j){
+                    iterazioneElementi[i][j]=0;
+                }
+            }
+        }
         //sistema
         for (int i = 0; i < numElementi; i++) {
             iterazioneElementi[i] = sistemaPotenze(iterazioneElementi[i]);
@@ -84,48 +89,56 @@ public class Equilibrio {
         return array;
     }
 
-    private int[] subisce(int numElementi, int[] array) {
+    private int[] subisce(int[] array) {
 
-        int numSubisce=0;
-        int numDanneggia=0;
-        for(int j=0; j<array.length;j++){
-            if(array[j]==0){
-                numDanneggia++;
+            int numDanneggia = 0;
+            for (int j = 0; j < array.length; j++) {
+                if (array[j] == 0) {
+                    numDanneggia++;
+                }
+
             }
 
-        }
-
-        numSubisce=random.nextInt(numDanneggia)+1;
-        int numMaxPotenza=0;
-        for (int i=0; i<array.length && numSubisce != 0;i++){
-            if(array[i] !=0){
-                i++;
-            }else{
-                numMaxPotenza = (numElementi - numSubisce);
-                array[i]=-(random.nextInt(numMaxPotenza));
-                numSubisce--;
+            int numMaxPotenza = 0;
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] == 0) {
+                    numMaxPotenza = (numDanneggia);
+                    array[i] = -(random.nextInt(numMaxPotenza) + 1);
+                    numDanneggia--;
+                }
             }
-        }
+            //completare
+       if(sommaArrayPositivi(array)+sommaArrayNegativi(array)==0){
 
+       }
         return array;
 
     }
 
     private int[] sistemaPotenze(int[] array){
-        int numZeri=0;
-        for(int i=0;i<array.length;i++){
-            if(array[i]==0){
-                numZeri++;
-            }
-        }
-
-        if(numZeri!=array.length){
-
             int posCambio=random.nextInt(array.length);
+            if(array[posCambio]==0){
+             if(posCambio>=0 && posCambio<(array.length)){
+                 posCambio=posCambio+1;
+             }else if(posCambio == array.length){
+                 posCambio=posCambio-1;
+             }
+
+            }
             array[posCambio]=0;
             array[posCambio]=-(sommaArrayNegativi(array)+sommaArrayPositivi(array));
-        }
+
         return array;
+    }
+
+    private boolean printMatrix(int[][] matrix){
+        for(int i=0; i<matrix.length;i++){
+            for(int j=0; j< matrix.length; j++){
+                System.out.printf("%10d",matrix[i][j]);
+            }
+            System.out.println();
+        }
+        return false;
     }
 
 
