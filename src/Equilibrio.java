@@ -10,6 +10,7 @@ public class Equilibrio {
     public void generaEquilibrio() {
 
         inserisciElementi(5);//partita.getNumeroElementi()
+        iterazioneElementi = new int[5][5];
         printMatrix(iterazioneElementi);
 
     }
@@ -17,7 +18,7 @@ public class Equilibrio {
 
 
     private boolean inserisciElementi(int numElementi) {
-        iterazioneElementi = new int[numElementi][numElementi];
+
         //danneggia
         for (int i = 0; i < numElementi; i++) {
             iterazioneElementi[i] = danneggia(iterazioneElementi[i]);
@@ -160,7 +161,7 @@ public class Equilibrio {
         return matrix;
     }
 
-    private boolean printMatrix(int[][] matrix){
+    public boolean printMatrix(int[][] matrix){
         for(int i=0; i<matrix.length;i++){
             for(int j=0; j< matrix.length; j++){
                 System.out.printf("%10d",matrix[i][j]);
