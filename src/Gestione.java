@@ -42,7 +42,7 @@ public class Gestione {
         System.out.println(gen_par);
         partita.SetPartita(numeroElementi,nomeElementi,play1,play2);
         System.out.println(gen_eql);
-        equilibrio.generaEquilibrio(numeroElementi);
+       // equilibrio.generaEquilibrio(numeroElementi);
     }
 
 
@@ -62,7 +62,7 @@ public class Gestione {
         System.out.println(abb_text);
         System.out.println("\t\t\t\t\til vincitore è " + nome.toUpperCase() );
         System.out.println(abb_text);
-        equilibrio.printMatrix();
+        //equilibrio.printMatrix();
         System.out.println(eql_par);
     }
 
