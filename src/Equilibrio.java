@@ -22,7 +22,7 @@ public class Equilibrio {
         //riempi con valore sentinella
         for(int i=0; i<numElementi; i++){
             for(int j=0; j<numElementi; j++){
-                    iterazioneElementi[i][j]=numElementi+1;
+                iterazioneElementi[i][j]=numElementi+1;
             }
         }
 
@@ -35,50 +35,34 @@ public class Equilibrio {
             }
         }
 
-        //danneggia
-        for (int i = 0; i < numElementi; i++) {
-            iterazioneElementi[i] = danneggia(iterazioneElementi[i]);
+        for (int i=0; i<iterazioneElementi.length;i++){
+            danneggia(iterazioneElementi[i]);
+            subisce(iterazioneElementi[i]);
         }
-
-        //subisce
-        for (int i = 0; i < numElementi; i++) {
-            iterazioneElementi[i] = subisce(iterazioneElementi[i]);
+        for(int j=0;j<iterazioneElementi.length;j++){
+            sistemaPotenze(iterazioneElementi[j],j);
+            copiaValore(iterazioneElementi,j);
+            printMatrix(iterazioneElementi);
+            System.out.println("__________________________");
+            System.out.println("__________________________");
         }
-
-        //sistema
-
-            sistemaPotenze(iterazioneElementi);
 
 
         return false;
     }
 
-    private int sommaArrayPositivi(int[] array) {
+    private int sommaArray(int[] array) {
         int sum = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] > 0) {
-                sum += array[i];
-            }
-
+        for (int numero: array) {
+            sum += numero;
         }
         return sum;
     }
 
-    private int sommaArrayNegativi(int[] array) {
-        int sum = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] < 0) {
-                sum += array[i];
-            }
 
-        }
-        return sum;
-    }
 
     private int[] danneggia(int[] array) {
-
-
-        int numElementiDanneggia = random.nextInt(array.length-1)+1;
+        int numElementiDanneggia = random.nextInt(array.length-2)+1;
         int numMaxPotenza = 0;
         int pos1 = 0, pos2 =0;
         int numElementi=array.length;
@@ -115,29 +99,24 @@ public class Equilibrio {
 
     private int[] subisce(int[] array) {
 
-            int numDanneggia = 0;
-            for (int j = 0; j < array.length; j++) {
-                if (array[j] == array.length+1) {
-                    numDanneggia++;
-                }
-
+        int numSubisce = 0;
+        for (int j = 0; j < array.length; j++) {
+            if (array[j] == array.length+1) {
+                numSubisce++;
             }
 
-            int numMaxPotenza = 0;
-            numMaxPotenza = array.length -(numDanneggia);
-            for (int i = 0; i < array.length; i++) {
+        }
 
-                if (array[i] == array.length+1) {
+        int numMaxPotenza = array.length-1;
+        for (int i = 0; i < array.length && numSubisce!=0; i++) {
 
-                    if(numMaxPotenza!=0){
-                        array[i] = -(random.nextInt(numMaxPotenza) + 1);
-                    }else {
-                        array[i]=-1;
-                    }
+            if(array[i]==array.length+1){
+                array[i] = -(random.nextInt(numMaxPotenza) + 1);
 
-                        numMaxPotenza--;
-                }
+                numSubisce--;
+                numMaxPotenza--;
             }
+        }
         return array;
 
     }
@@ -152,18 +131,18 @@ public class Equilibrio {
         return false;
     }
 
-    private int cercaMaggiore(int[] array, boolean isSubisce){
+    private int cercaMaggiore(int[] array, boolean isSubisce, int zeroIndex){
         int max=array[0];
         int index=0;
         if(isSubisce){
-            for (int i=0; i<array.length;i++){
+            for (int i=zeroIndex+1; i<array.length;i++){
                 if(array[i]<0 && array[i]<max){
                     max=array[i];
                     index=i;
                 }
             }
         }else{
-            for (int i=0; i<array.length;i++){
+            for (int i=zeroIndex+1; i<array.length;i++){
                 if(array[i]>0 && array[i]>max){
                     max=array[i];
                     index=i;
@@ -179,14 +158,14 @@ public class Equilibrio {
         int index=0;
         if(isSubisce){
             for (int i=0; i<array.length;i++){
-                if(array[i]<0 && array[i]>min){
+                if(array[i]<0 && array[i]<min){
                     min=array[i];
                     index=i;
                 }
             }
         }else{
             for (int i=0; i<array.length;i++){
-                if(array[i]>0 && array[i]<min){
+                if(array[i]>0 && array[i]>min){
                     min=array[i];
                     index=i;
                 }
@@ -196,72 +175,131 @@ public class Equilibrio {
         return index;
     }
 
-    private boolean checkSumZero(int[] array){
-        if(sommaArrayNegativi(array)+sommaArrayPositivi(array) ==0){
-            return true;
-        }
-        return false;
-    }
 
 
-    private int[][] sistemaPotenze(int[][] matrix) {
-        int posCambio = 0;
-        for (int i = 0; i < matrix.length; i++) {
-            if (sommaArrayNegativi(matrix[i]) + sommaArrayPositivi(matrix[i]) == 0) {
-                break;
-            } else {
+    private int[] sistemaPotenze(int[] array, int zeroIndex) {
 
-                //cerco se ci sono più elementi che danneggiano o che subiscono
-                //tra uno dei due trovo il maggiore e lo sostituisco
-                int nSubisce = 0, nDanneggia = 0;
-                for (int l = 0; l < matrix[i].length; l++) {
-                    if (matrix[i][l] > 0) {
-                        nDanneggia++;
-                    } else {
-                        nSubisce++;
+        if(sommaArray(array)==0) return array;
+        /*
+        int differenza=calcolaDifferenza(array,zeroIndex);
+        do{
+            int pos=0;
+            if(differenza<0){
+                pos = cercaMaggiore(array,false);
+                array[pos]+=differenza;
+            }else{
+                pos = cercaMinore(array,true);
+                array[pos]+=differenza;
+            }
+
+
+            if(!(array[pos]<=array.length-1 && array[pos] !=0 && array[pos]>=-(array.length-1)) ){
+                if(array[pos]==0){
+                    if(differenza>0){
+                        array[pos]=+1;
+                    }else{
+                        array[pos]=-1;
+                    }
+                }else{
+                    if(differenza>0){
+                        array[pos]=(array.length-1);
+                    }else{
+                        array[pos]=-(array.length-1);
                     }
                 }
 
-                if (nDanneggia > nSubisce) {
-                    posCambio = cercaMaggiore(matrix[i], false);
+            }
+            differenza=calcolaDifferenza(array,zeroIndex);
+        }while(differenza!=0);
+
+        */
+
+        do {
+            int posCambio = 0;
+
+            int nSubisce = 0, nDanneggia = 0;
+            for (int l = 0; l < array.length; l++) {
+                if(array[l]==0) continue;
+                if (array[l] > 0) {
+                    nDanneggia++;
                 } else {
-                    posCambio = cercaMaggiore(matrix[i], true);
+                    nSubisce++;
                 }
-                matrix[i][posCambio] = 0;
-                matrix[i][posCambio] = -(sommaArrayNegativi(matrix[i]) + sommaArrayPositivi(matrix[i]));
+            }
+
+            if (nDanneggia > nSubisce) {
+                posCambio = cercaMaggiore(array, false,zeroIndex);
+            } else {
+                posCambio = cercaMaggiore(array, true,zeroIndex);
+            }
+            array[posCambio] = 0;
+            array[posCambio] = -(sommaArrayNegativi(array) + sommaArrayPositivi(array));
+
+            if (!(array[posCambio]<=array.length-1 && array[posCambio] !=0 && array[posCambio]>=-(array.length-1))) {
+                if (nDanneggia > nSubisce) {
+                    array[posCambio] = +1;
+                } else {
+                    array[posCambio] = +1;
+                }
 
 
             }
+
+        }while (sommaArrayNegativi(array) + sommaArrayPositivi(array) != 0);
+
+
+
+
+        return array;
+    }
+
+    private int sommaArrayPositivi(int[] array) {
+        int sum = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] > 0) {
+                sum += array[i];
+            }
+
         }
-        return matrix;
+        return sum;
+    }
+
+    private int sommaArrayNegativi(int[] array) {
+        int sum = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] < 0) {
+                sum += array[i];
+            }
+
+        }
+        return sum;
+    }
+
+
+    private int calcolaDifferenza(int[] array, int zeroIndex){
+        int differenza=0;
+        int sumBeforeZero=0, sumAfterZero=0;
+        for (int j=zeroIndex; j>=0;j--){
+            sumBeforeZero+=array[j];
+        }
+        for (int j=zeroIndex; j<array.length;j++){
+            sumAfterZero+=array[j];
+        }
+        differenza=sumBeforeZero+sumAfterZero;
+
+        return differenza;
+    }
+
+    private void copiaValore(int[][] matrix,int zeroIndex){
+        for(int i=zeroIndex+1;i<matrix.length;i++){
+            int a = matrix[zeroIndex][i];
+            matrix[i][zeroIndex]=-a;
+        }
+
     }
 
 
 
-
-
-    public static String find(int[] A, int currSum, int index, int sum, int[] solution) {
-        if (currSum == sum) {
-            System.out.print("\nS:");
-            for (int i = 0; i < solution.length; i++) {
-                if (solution[i] == 1) {
-                    str=str+(A[i]+"&");
-                    System.out.print(str);
-                }
-            }
-
-        } else if (index == A.length) {
-            return str;
-        } else {
-            solution[index] = 1;// select the element
-            currSum += A[index];
-            find(A, currSum, index + 1, sum, solution);
-            currSum -= A[index];
-            solution[index] = 0;// do not select the element
-            find(A, currSum, index + 1, sum, solution);
-        }
-        return str ;
-    }
 
 
 
