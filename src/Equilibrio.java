@@ -179,75 +179,13 @@ public class Equilibrio {
 
     private int[] sistemaPotenze(int[] array, int zeroIndex) {
 
-        if(sommaArray(array)==0) return array;
-        /*
-        int differenza=calcolaDifferenza(array,zeroIndex);
-        do{
-            int pos=0;
-            if(differenza<0){
-                pos = cercaMaggiore(array,false);
-                array[pos]+=differenza;
-            }else{
-                pos = cercaMinore(array,true);
-                array[pos]+=differenza;
-            }
 
-
-            if(!(array[pos]<=array.length-1 && array[pos] !=0 && array[pos]>=-(array.length-1)) ){
-                if(array[pos]==0){
-                    if(differenza>0){
-                        array[pos]=+1;
-                    }else{
-                        array[pos]=-1;
-                    }
-                }else{
-                    if(differenza>0){
-                        array[pos]=(array.length-1);
-                    }else{
-                        array[pos]=-(array.length-1);
-                    }
-                }
-
-            }
-            differenza=calcolaDifferenza(array,zeroIndex);
-        }while(differenza!=0);
-
-        */
-
-        do {
-            int posCambio = 0;
-
-            int nSubisce = 0, nDanneggia = 0;
-            for (int l = 0; l < array.length; l++) {
-                if(array[l]==0) continue;
-                if (array[l] > 0) {
-                    nDanneggia++;
-                } else {
-                    nSubisce++;
-                }
-            }
-
-            if (nDanneggia > nSubisce) {
-                posCambio = cercaMaggiore(array, false,zeroIndex);
-            } else {
-                posCambio = cercaMaggiore(array, true,zeroIndex);
-            }
-            array[posCambio] = 0;
-            array[posCambio] = -(sommaArrayNegativi(array) + sommaArrayPositivi(array));
-
-            if (!(array[posCambio]<=array.length-1 && array[posCambio] !=0 && array[posCambio]>=-(array.length-1))) {
-                if (nDanneggia > nSubisce) {
-                    array[posCambio] = +1;
-                } else {
-                    array[posCambio] = +1;
-                }
-
-
-            }
-
-        }while (sommaArrayNegativi(array) + sommaArrayPositivi(array) != 0);
-
-
+        int index=indiceCorretto(zeroIndex);
+        if(index>=zeroIndex){
+            index++;
+        }
+        array[index] = 0;
+        array[index] = -(sommaArrayNegativi(array) + sommaArrayPositivi(array));
 
 
         return array;
@@ -298,7 +236,72 @@ public class Equilibrio {
 
     }
 
+    private int indiceCorretto(int zeroIndex ){
+        int[] array=iterazioneElementi[zeroIndex];
+        int index;
+        int nSubisce = 0, nDanneggia = 0;
 
+        int j=0;
+        int[] arrayTemp=new int[array.length-1];
+        for (int i=0; i<array.length;i++){
+            if(array[i]!=0){
+                arrayTemp[j]=array[i];
+                j++;
+            }
+        }
+
+        for (int l = 0; l < arrayTemp.length; l++) {
+            if (arrayTemp[l] > 0) {
+                nDanneggia++;
+            } else {
+                nSubisce++;
+            }
+            }
+
+
+        if (nDanneggia > nSubisce) {
+            index = cercaMaggiore(arrayTemp, false,zeroIndex);
+        } else {
+            index = cercaMaggiore(arrayTemp, true,zeroIndex);
+        }
+
+        int[] arrayTemp2=arrayTemp;
+        arrayTemp2[index] = 0;
+        arrayTemp2[index] = -(sommaArrayNegativi(arrayTemp2) + sommaArrayPositivi(arrayTemp2));
+
+        if ((arrayTemp2[index]<=array.length-1 && arrayTemp2[index] !=0 && arrayTemp2[index]>=-(array.length-1))
+        && sommaArrayNegativi(arrayTemp2) + sommaArrayPositivi(arrayTemp2) == 0) {
+            return index;
+        }else {
+            int nuovoIndice;
+            if (index >= zeroIndex) {
+                index++;
+            }
+
+            int numSubisce, numDanneggia;
+            numSubisce = sommaArrayNegativi(iterazioneElementi[zeroIndex]);
+            numDanneggia = sommaArrayPositivi(iterazioneElementi[zeroIndex]);
+            int sum = numSubisce + numDanneggia;
+
+                nuovoIndice = random.nextInt(iterazioneElementi.length);
+                if (nuovoIndice != zeroIndex) {
+                    if (iterazioneElementi[zeroIndex][nuovoIndice] + sum <= iterazioneElementi.length - 1 && iterazioneElementi[nuovoIndice][index] + sum != 0 && iterazioneElementi[nuovoIndice][index] + sum >= -(iterazioneElementi.length - 1)) {
+                        iterazioneElementi[zeroIndex][nuovoIndice] += sum;
+                    }else{
+                        iterazioneElementi[zeroIndex][nuovoIndice]=iterazioneElementi.length-1;
+                    }
+                }else{
+                    if(zeroIndex==iterazioneElementi.length){
+                        nuovoIndice--;
+                    }else{
+                        nuovoIndice++;
+                    }
+                }
+                indiceCorretto(zeroIndex);
+        }
+
+            return index;
+    }
 
 
 
