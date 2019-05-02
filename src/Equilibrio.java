@@ -6,30 +6,20 @@ public class Equilibrio {
     private int[][] iterazioneElementi;
     Partita partita = new Partita();
 
-
     public void generaEquilibrio() {
-        iterazioneElementi = new int[5][5];
-        inserisciElementi(5);//partita.getNumeroElementi()
+        iterazioneElementi = new int[6][6];
+        inserisciElementi(6);//partita.getNumeroElementi()
         printMatrix(iterazioneElementi);
 
     }
 
-
     private boolean isCorrect=false;
 
-    private int count;
     private boolean inserisciElementi(int numElementi) {
 
-        //riempi con valore sentinella
         for(int i=0; i<numElementi; i++){
             for(int j=0; j<numElementi; j++){
                 iterazioneElementi[i][j]=numElementi+1;
-            }
-        }
-
-        //azzera diagonale
-        for(int i=0; i<numElementi; i++){
-            for(int j=0; j<numElementi; j++){
                 if(i==j){
                     iterazioneElementi[i][j]=0;
                 }
@@ -47,12 +37,10 @@ public class Equilibrio {
             indiceCorretto(j);
             isCorrect=false;
             copiaValore(j);
-            printMatrix(iterazioneElementi);
-            System.out.println("--------------------------------------");
 
         }
         if(sommaArrayPositivi(iterazioneElementi[iterazioneElementi.length-1])+sommaArrayNegativi(iterazioneElementi[iterazioneElementi.length-1])!=0){
-            inserisciElementi(5);
+            inserisciElementi(6);
         }
 
         return true;
@@ -150,7 +138,6 @@ public class Equilibrio {
         return index;
     }
 
-
     private int sommaArrayPositivi(int[] array) {
         int sum = 0;
         for (int i = 0; i < array.length; i++) {
@@ -173,8 +160,6 @@ public class Equilibrio {
         return sum;
     }
 
-
-
     private void copiaValore(int zeroIndex){
         for(int i=zeroIndex+1;i<iterazioneElementi.length;i++){
             int a = iterazioneElementi[zeroIndex][i];
@@ -182,8 +167,6 @@ public class Equilibrio {
         }
 
     }
-
-
 
     private boolean indiceCorretto(int zeroIndex ){
         int index;
@@ -231,7 +214,7 @@ public class Equilibrio {
         return false;
 
     }
-    //Error
+
     private int index(int zeroIndex){
         int index=0;
         int nSubisce = 0, nDanneggia = 0;
@@ -258,6 +241,5 @@ public class Equilibrio {
 
         return index;
     }
-
 
 }
