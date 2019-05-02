@@ -16,6 +16,7 @@ public class Equilibrio {
 
     private boolean isCorrect=false;
 
+    private int count;
     private boolean inserisciElementi(int numElementi) {
 
         //riempi con valore sentinella
@@ -274,7 +275,7 @@ public class Equilibrio {
             sum=numSubisce + numDanneggia;
 
 
-
+            count++;
             nuovoIndice = zeroIndex+random.nextInt((iterazioneElementi.length)-zeroIndex);
 
             if (nuovoIndice != zeroIndex) {
