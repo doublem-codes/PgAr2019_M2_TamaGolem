@@ -132,6 +132,7 @@ public class Gestione {
         System.out.println(abb_text);
         System.out.println("\t\t\t\t\t IL PERDENTE E' " + perdente);//stampa perdente
         System.out.println(abb_text);
+
         System.out.println(eql_par);
         System.out.println("--- STAMPA INDICI ELEMENTI PER DECODIFICA TABELLA ---");
         stampaElementi();
