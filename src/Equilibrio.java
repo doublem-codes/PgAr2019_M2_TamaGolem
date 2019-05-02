@@ -2,7 +2,6 @@ import java.util.Random;
 
 
 public class Equilibrio {
-    public static String str ="";
     Random random = new Random();
     private int[][] iterazioneElementi;
     Partita partita = new Partita();
@@ -15,7 +14,7 @@ public class Equilibrio {
 
     }
 
-
+    private boolean isCorrect=false;
 
     private boolean inserisciElementi(int numElementi) {
 
@@ -39,27 +38,26 @@ public class Equilibrio {
             danneggia(iterazioneElementi[i]);
             subisce(iterazioneElementi[i]);
         }
-        for(int j=0;j<iterazioneElementi.length;j++){
-            sistemaPotenze(iterazioneElementi[j],j);
-            copiaValore(iterazioneElementi,j);
+
+        //SISTEMA
+        for(int j=0;j<iterazioneElementi.length-1;j++){
+
+            int index = indiceCorretto(j);
+            if(index>=j){
+                index++;
+            }
+            iterazioneElementi[j][index]=0;
+            iterazioneElementi[j][index]=-(sommaArrayNegativi(iterazioneElementi[j]) + sommaArrayPositivi(iterazioneElementi[j]));
+
+            isCorrect=false;
+            copiaValore(j);
             printMatrix(iterazioneElementi);
-            System.out.println("__________________________");
-            System.out.println("__________________________");
+            System.out.println("--------------------------------------");
+
         }
 
-
-        return false;
+        return true;
     }
-
-    private int sommaArray(int[] array) {
-        int sum = 0;
-        for (int numero: array) {
-            sum += numero;
-        }
-        return sum;
-    }
-
-
 
     private int[] danneggia(int[] array) {
         int numElementiDanneggia = random.nextInt(array.length-2)+1;
@@ -175,22 +173,6 @@ public class Equilibrio {
         return index;
     }
 
-
-
-    private int[] sistemaPotenze(int[] array, int zeroIndex) {
-
-
-        int index=indiceCorretto(zeroIndex);
-        if(index>=zeroIndex){
-            index++;
-        }
-        array[index] = 0;
-        array[index] = -(sommaArrayNegativi(array) + sommaArrayPositivi(array));
-
-
-        return array;
-    }
-
     private int sommaArrayPositivi(int[] array) {
         int sum = 0;
         for (int i = 0; i < array.length; i++) {
@@ -228,24 +210,29 @@ public class Equilibrio {
         return differenza;
     }
 
-    private void copiaValore(int[][] matrix,int zeroIndex){
-        for(int i=zeroIndex+1;i<matrix.length;i++){
-            int a = matrix[zeroIndex][i];
-            matrix[i][zeroIndex]=-a;
+    private void copiaValore(int zeroIndex){
+        for(int i=zeroIndex+1;i<iterazioneElementi.length;i++){
+            int a = iterazioneElementi[zeroIndex][i];
+            iterazioneElementi[i][zeroIndex]=-a;
         }
 
     }
 
+    private int index;
+    private int nuovoIndice;
+
     private int indiceCorretto(int zeroIndex ){
-        int[] array=iterazioneElementi[zeroIndex];
-        int index;
+
+        Random random=new Random();
+
         int nSubisce = 0, nDanneggia = 0;
 
+
         int j=0;
-        int[] arrayTemp=new int[array.length-1];
-        for (int i=0; i<array.length;i++){
-            if(array[i]!=0){
-                arrayTemp[j]=array[i];
+        int[] arrayTemp=new int[iterazioneElementi[zeroIndex].length-1];
+        for (int i=0; i<iterazioneElementi[zeroIndex].length;i++){
+            if(iterazioneElementi[zeroIndex][i]!=0){
+                arrayTemp[j]=iterazioneElementi[zeroIndex][i];
                 j++;
             }
         }
@@ -256,24 +243,26 @@ public class Equilibrio {
             } else {
                 nSubisce++;
             }
-            }
-
-
-        if (nDanneggia > nSubisce) {
-            index = cercaMaggiore(arrayTemp, false,zeroIndex);
-        } else {
-            index = cercaMaggiore(arrayTemp, true,zeroIndex);
         }
 
-        int[] arrayTemp2=arrayTemp;
-        arrayTemp2[index] = 0;
-        arrayTemp2[index] = -(sommaArrayNegativi(arrayTemp2) + sommaArrayPositivi(arrayTemp2));
+        if(!isCorrect){
+            if (nDanneggia > nSubisce) {
+                index = cercaMaggiore(arrayTemp, false,zeroIndex);
+            } else {
+                index = cercaMaggiore(arrayTemp, true,zeroIndex);
+            }
+        }else {
+            index=nuovoIndice-1;
+        }
 
-        if ((arrayTemp2[index]<=array.length-1 && arrayTemp2[index] !=0 && arrayTemp2[index]>=-(array.length-1))
-        && sommaArrayNegativi(arrayTemp2) + sommaArrayPositivi(arrayTemp2) == 0) {
+        arrayTemp[index] = 0;
+        arrayTemp[index] = -(sommaArrayNegativi(arrayTemp) + sommaArrayPositivi(arrayTemp));
+
+        if ((arrayTemp[index]<=iterazioneElementi[zeroIndex].length-1 && arrayTemp[index] !=0 && arrayTemp[index]>=-(iterazioneElementi[zeroIndex].length-1)) && sommaArrayNegativi(arrayTemp) + sommaArrayPositivi(arrayTemp) == 0)
+        {
             return index;
         }else {
-            int nuovoIndice;
+
             if (index >= zeroIndex) {
                 index++;
             }
@@ -281,26 +270,38 @@ public class Equilibrio {
             int numSubisce, numDanneggia;
             numSubisce = sommaArrayNegativi(iterazioneElementi[zeroIndex]);
             numDanneggia = sommaArrayPositivi(iterazioneElementi[zeroIndex]);
-            int sum = numSubisce + numDanneggia;
+            int sum = 0;
+            sum=numSubisce + numDanneggia;
 
-                nuovoIndice = random.nextInt(iterazioneElementi.length);
-                if (nuovoIndice != zeroIndex) {
-                    if (iterazioneElementi[zeroIndex][nuovoIndice] + sum <= iterazioneElementi.length - 1 && iterazioneElementi[nuovoIndice][index] + sum != 0 && iterazioneElementi[nuovoIndice][index] + sum >= -(iterazioneElementi.length - 1)) {
-                        iterazioneElementi[zeroIndex][nuovoIndice] += sum;
-                    }else{
-                        iterazioneElementi[zeroIndex][nuovoIndice]=iterazioneElementi.length-1;
-                    }
+
+
+            nuovoIndice = zeroIndex+random.nextInt((iterazioneElementi.length)-zeroIndex);
+
+            if (nuovoIndice != zeroIndex) {
+                if (iterazioneElementi[zeroIndex][nuovoIndice] + sum <= iterazioneElementi.length - 1 && iterazioneElementi[nuovoIndice][index] + sum != 0 && iterazioneElementi[nuovoIndice][index] + sum >= -(iterazioneElementi.length - 1)) {
+                    iterazioneElementi[zeroIndex][nuovoIndice] += sum;
                 }else{
-                    if(zeroIndex==iterazioneElementi.length){
-                        nuovoIndice--;
-                    }else{
-                        nuovoIndice++;
-                    }
+                    iterazioneElementi[zeroIndex][nuovoIndice]=iterazioneElementi.length-1;
                 }
-                indiceCorretto(zeroIndex);
+            }else{
+                if(zeroIndex==iterazioneElementi.length){
+                    nuovoIndice--;
+                }else{
+                    nuovoIndice++;
+                }
+                if (iterazioneElementi[zeroIndex][nuovoIndice] + sum <= iterazioneElementi.length - 1 && iterazioneElementi[nuovoIndice][index] + sum != 0 && iterazioneElementi[nuovoIndice][index] + sum >= -(iterazioneElementi.length - 1)) {
+                    iterazioneElementi[zeroIndex][nuovoIndice] = iterazioneElementi[zeroIndex][nuovoIndice] +sum;
+                }else{
+                    iterazioneElementi[zeroIndex][nuovoIndice]=iterazioneElementi.length-1;
+                }
+
+            }
+            isCorrect=true;
+
+            indiceCorretto(zeroIndex);
         }
 
-            return index;
+        return index;
     }
 
 
