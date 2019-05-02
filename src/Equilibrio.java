@@ -11,8 +11,6 @@ public class Equilibrio {
         inserisciElementi(numeroelementi);//partita.getNumeroElementi()
     }
 
-
-
     private boolean inserisciElementi(int numElementi) {
         iterazioneElementi = new int[numElementi][numElementi];
         //danneggia
