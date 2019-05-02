@@ -14,6 +14,7 @@ public class Equilibrio {
 
     }
 
+
     private boolean isCorrect=false;
 
     private int count;
