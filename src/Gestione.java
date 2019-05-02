@@ -11,6 +11,8 @@ public class Gestione {
     private static String menu_numero_elementi ="\n--- INSERIMENTO NUMERO PIETRE --- " +
                                                 "\n-SE TRA 3 E 5: DIFFICOLTA FACILE\n-SE TRA 6 E 8: DIFFICOLTA MEDIA\n" +
                                                 "-SE TRA 9 E 10:DIFFICOLTA DIFFICLE\n-SE MAGGIORE DI 10 SI POTREBBE COMPROMETTERE IL GIOCO";
+
+    private static String err_p = "--- ERRORE DI INSERIMENTO PIETRE PERCHE' SONO UGUALI TRA I DUE GOLEM ---";
     private static String abb_text="\n! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !\n";
 
     //inserimento caratteri escape del loop do gioco
@@ -56,48 +58,51 @@ public class Gestione {
        // equilibrio.generaEquilibrio(numeroElementi);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     //iterazione tra i golem
     public void fase2(){
         System.out.println(start_par);//inizio partita
         int golem1=0 , golem2=0;
+
         System.out.println("GIOCATORE "+partita.getPlayer1() + " SCEGLERE PIETRE DEL PRIMO GOLEM SCHIERATO");
         partita.getPlayer1Golem().get(golem1).setPietre(acquisiciElementiGolem());
         System.out.println("GIOCATORE "+partita.getPlayer2() + " SCEGLERE PIETRE DEL PRIMO GOLEM SCHIERATO");
         partita.getPlayer2Golem().get(golem2).setPietre(acquisiciElementiGolem());
 
+        while (controlloElemntiGiocatori(golem1,golem2))
+        {
+            for(int j=0; j<partita.getNumeroPietreGolem();j++)
+            {
+                partita.getSacca().add(partita.getPlayer1Golem().get(golem1).getPietre().get(j));
+                partita.getSacca().add(partita.getPlayer2Golem().get(golem2).getPietre().get(j));
+            }
+            System.out.println(err_p);
+            System.out.println("GIOCATORE "+partita.getPlayer1() + " RINSERIRE PIETRE DEL PRIMO GOLEM SCHIERATO");
+            partita.getPlayer1Golem().get(golem1).setPietre(acquisiciElementiGolem());
+            System.out.println("GIOCATORE "+partita.getPlayer2() + " RINSERIRE PIETRE DEL PRIMO GOLEM SCHIERATO");
+            partita.getPlayer2Golem().get(golem2).setPietre(acquisiciElementiGolem());
+        }
+
         int pietre = 0;
-        do{
+        do {
             do {
-                int vita1 =  partita.getPlayer1Golem().get(golem1).getVita();
+                int vita1 = partita.getPlayer1Golem().get(golem1).getVita();
                 int vita2 = partita.getPlayer2Golem().get(golem2).getVita();
 
                 String pietra1 = partita.getPlayer1Golem().get(golem1).getPietre().get(pietre);
                 String pietra2 = partita.getPlayer2Golem().get(golem2).getPietre().get(pietre);
 
-                if(!pietra1.equals(pietra2)) {
+
                     //gestione equilibrio
                     //aggiornamento vita
-                }
+
 
                 partita.getPlayer1Golem().get(golem1).setVita(vita1);
                 partita.getPlayer2Golem().get(golem2).setVita(vita2);
-            }while (partita.getPlayer1Golem().get(golem1).getVita() <= 0 || partita.getPlayer2Golem().get(golem2).getVita() <=0 );
+            } while (partita.getPlayer1Golem().get(golem1).getVita() <= 0 || partita.getPlayer2Golem().get(golem2).getVita() <= 0);
 
-            if(partita.getPlayer1Golem().get(golem1).getVita() <= 0){
-                if(golem1 == partita.getNumeroGolem())//asseganzione vincitore
+            if (partita.getPlayer1Golem().get(golem1).getVita() <= 0)
+            {
+                if (golem1 == partita.getNumeroGolem())//asseganzione vincitore
                 {
                     vincitore = partita.getPlayer2();
                     perdente = partita.getPlayer1();
@@ -106,9 +111,19 @@ public class Gestione {
                 System.out.println(partita.getPlayer1() + " SCEGLERE PIETRE DEL NUOVO GOLEM DA SCHIERARE");
                 golem1++;
                 partita.getPlayer1Golem().get(golem1).setPietre(acquisiciElementiGolem());
+                while (controlloElemntiGiocatori(golem1, golem2))
+                {
+                    for(int j=0; j<partita.getNumeroPietreGolem();j++)
+                    {
+                        partita.getSacca().add(partita.getPlayer1Golem().get(golem1).getPietre().get(j));
+                    }
+                    System.out.println(partita.getPlayer1() + " RINSERIRE PIETRE DEL NUOVO GOLEM SCHIERATO");
+                    partita.getPlayer1Golem().get(golem1).setPietre(acquisiciElementiGolem());
+                }
             }
 
-            if(partita.getPlayer2Golem().get(golem2).getVita() <= 0){
+            if(partita.getPlayer2Golem().get(golem2).getVita() <= 0)
+            {
                 if(golem2 == partita.getNumeroGolem())//asseganzione vincitore
                 {
                     perdente = partita.getPlayer2();
@@ -118,10 +133,21 @@ public class Gestione {
                 System.out.println(partita.getPlayer2() + " SCEGLERE PIETRE DEL NUOVO GOLEM DA SCHIERARE");
                 golem2++;
                 partita.getPlayer2Golem().get(golem2).setPietre(acquisiciElementiGolem());
+                while (controlloElemntiGiocatori(golem1, golem2))
+                {
+                    for(int j=0; j<partita.getNumeroPietreGolem();j++)
+                    {
+                        partita.getSacca().add(partita.getPlayer2Golem().get(golem2).getPietre().get(j));
+                    }
+                    System.out.println(partita.getPlayer2() + " RINSERIRE PIETRE DEL NUOVO GOLEM SCHIERATO");
+                    partita.getPlayer2Golem().get(golem2).setPietre(acquisiciElementiGolem());
+                }
             }
+
             pietre++;
             if(pietre == partita.getNumeroPietreGolem() ) pietre=0;
         }while(true);
+
         System.out.print(end_par);//fine partita
     }
 
@@ -150,12 +176,12 @@ public class Gestione {
         return input != charUscita;
     }
 
+    
     private void stampaElementi(){
         for(int i = 0 ; i<partita.getNomeElementi().size();i++){
             System.out.println("elemento " + (i+1) + " : " + partita.getNomeElementi().get(i));
         }
     }
-
     private void stampaSacca(){
         String elmentoSacca = partita.getSacca().get(0);
         int numeroRestante = 1;
@@ -170,9 +196,8 @@ public class Gestione {
         }
         System.out.println(elmentoSacca +": "+ numeroRestante);
     }
-
     private boolean controlloElemntiGiocatori(int numGolem1,int numGolem2){
-        int i=0;
+        int i = 0;
         if(partita.getPlayer1Golem().get(numGolem1).getPietre().get(i) == partita.getPlayer2Golem().get(numGolem2).getPietre().get(i)){
             i++;
             if(partita.getPlayer1Golem().get(numGolem1).getPietre().get(i) == partita.getPlayer2Golem().get(numGolem2).getPietre().get(i)){
@@ -184,7 +209,6 @@ public class Gestione {
         }
         return false;
     }
-
     private ArrayList<String> acquisiciElementiGolem(){
         ArrayList<String>elementi = new ArrayList<>();
         do {
@@ -208,5 +232,4 @@ public class Gestione {
         }while(elementi.size() != partita.getNumeroPietreGolem());
         return elementi;
     }
-
 }
