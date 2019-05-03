@@ -19,9 +19,9 @@ public class Gestione {
                                   "\n--- RICARICA PIETRE NELLA SACCA ---";
 
     private static String abb_text="\n! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !\n";
-    private static String abb_capo = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+    private static String abb_capo = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
-    //inserimento caratteri escape del loop do gioco
+    //inserimento caratteri escape del loop del gioco
     private static char charUscita = 'E';//carattere uscita
     private static char charNuovo = 'N';//carattere nuova partita
 
@@ -75,6 +75,7 @@ public class Gestione {
 
         System.out.println("GIOCATORE "+partita.getPlayer1() + " SCEGLERE PIETRE DEL PRIMO GOLEM SCHIERATO");
         partita.getPlayer1Golem().get(golem1).setPietre(acquisiciElementiGolem());
+        System.out.println(abb_capo);
         System.out.println("GIOCATORE "+partita.getPlayer2() + " SCEGLERE PIETRE DEL PRIMO GOLEM SCHIERATO");
         partita.getPlayer2Golem().get(golem2).setPietre(acquisiciElementiGolem());
 
@@ -88,23 +89,20 @@ public class Gestione {
             }
             System.out.println("GIOCATORE "+partita.getPlayer1() + " RINSERIRE PIETRE DEL PRIMO GOLEM SCHIERATO");
             partita.getPlayer1Golem().get(golem1).setPietre(acquisiciElementiGolem());
+            System.out.println(abb_capo);
             System.out.println("GIOCATORE "+partita.getPlayer2() + " RINSERIRE PIETRE DEL PRIMO GOLEM SCHIERATO");
             partita.getPlayer2Golem().get(golem2).setPietre(acquisiciElementiGolem());
         }
 
         int danno1Tot=0;
         int danno2Tot=0;
+        int vita1 = partita.getPlayer1Golem().get(golem1).getVita();
+        int vita2 = partita.getPlayer2Golem().get(golem2).getVita();
         do {
-            int vita1Tot = partita.getPlayer1Golem().get(golem1).getVita();
-            int vita2Tot = partita.getPlayer2Golem().get(golem2).getVita();
             int pietre = 0;
             int danni1 = 0;
             int danni2 = 0;
-
             do {
-                int vita1 = partita.getPlayer1Golem().get(golem1).getVita();
-                int vita2 = partita.getPlayer2Golem().get(golem2).getVita();
-
                 String pietra1 = partita.getPlayer1Golem().get(golem1).getPietre().get(pietre);
                 String pietra2 = partita.getPlayer2Golem().get(golem2).getPietre().get(pietre);
 
@@ -114,8 +112,8 @@ public class Gestione {
                 //danni1 = equilibrio.getDanniX(pietra1);
                 //danni2 = equilibrio.getDanniY(pietra2);
 
-                danno1Tot += danni1;
-                danno2Tot += danni2;
+                 danno1Tot += danni1;
+                 danno2Tot += danni2;
                  vita1 += danni1;
                  vita2 += danni2;
 
@@ -123,10 +121,8 @@ public class Gestione {
                 partita.getPlayer2Golem().get(golem2).setVita(vita2);
 
                 pietre++;
-                if(pietre == partita.getNumeroPietreGolem() ) pietre=0;
+                if(pietre == partita.getNumeroPietreGolem() ) pietre = 0;
             } while (partita.getPlayer1Golem().get(golem1).getVita() <= 0 || partita.getPlayer2Golem().get(golem2).getVita() <= 0);
-
-
 
             if (partita.getPlayer1Golem().get(golem1).getVita() <= 0)
             {
@@ -152,6 +148,8 @@ public class Gestione {
                     System.out.println(partita.getPlayer1() + " RINSERIRE PIETRE DEL NUOVO GOLEM SCHIERATO");
                     partita.getPlayer1Golem().get(golem1).setPietre(acquisiciElementiGolem());
                 }
+                vita1 = partita.getPlayer1Golem().get(golem1).getVita();
+
             }
 
             if(partita.getPlayer2Golem().get(golem2).getVita() <= 0)
@@ -159,7 +157,7 @@ public class Gestione {
                 if(golem2 == partita.getNumeroGolem())//asseganzione vincitore
                 {
                     perdente = partita.getPlayer2();
-                    vincitore= partita.getPlayer1();
+                    vincitore = partita.getPlayer1();
                     break;
                 }
                 System.out.println("DANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer2()+ " SONO " + danno2Tot);
@@ -177,6 +175,7 @@ public class Gestione {
                     System.out.println(partita.getPlayer2() + " RINSERIRE PIETRE DEL NUOVO GOLEM SCHIERATO");
                     partita.getPlayer2Golem().get(golem2).setPietre(acquisiciElementiGolem());
                 }
+                vita2 = partita.getPlayer2Golem().get(golem2).getVita();
             }
 
         }while(true);
