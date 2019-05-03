@@ -6,8 +6,6 @@ public class Partita {
     private int numeroPietreGolem;
     private int numeroPietreSacca;
     private int numeroPietreTipoSacca;
-
-
     private int vitaset;//da implementare
     private String player1;
     private String player2;
@@ -20,18 +18,19 @@ public class Partita {
 
     }
 
-    public Partita(int numeroElementi , ArrayList<String> nomeElementi, String player1, String player2){
+    public Partita(int numeroElementi , ArrayList<String> nomeElementi, String player1, String player2, int vita){
         this.player1 = player1;
         this.player2 = player2;
         this.numeroElementi = numeroElementi;
+        this.nomeElementi = nomeElementi;
+        this.vitaset = vita;
         this.numeroPietreGolem = setNumeroPietreGolem();
         this.numeroGolem = setNumeroGolem();//errore
         this.numeroPietreSacca = setNumeroPietreSacca();
         this.numeroPietreTipoSacca =setNumeroPietreTipoSacca() ;
-        this.nomeElementi = nomeElementi;
         this.sacca = setSacca();
-        this.player1Golem = setPlayerGolem(true);
-        this.player2Golem = setPlayerGolem(false);
+        this.player1Golem = setPlayerGolem();
+        this.player2Golem = setPlayerGolem();
     }
 
     private int setNumeroGolem() {
@@ -46,10 +45,12 @@ public class Partita {
         return(this. numeroPietreSacca / this.numeroPietreGolem);
     }
 
-    private ArrayList<Golem> setPlayerGolem(boolean isOne) {
+    private ArrayList<Golem> setPlayerGolem() {
         ArrayList<Golem> playerGolem = new ArrayList<>(this.numeroGolem);
         for (int i = 0; i < playerGolem.size() ; i++){
-            playerGolem.get(i).setVita(this.vitaset);
+            Golem golem = new Golem();
+            golem.setVita(this.vitaset);
+            playerGolem.add(golem);
         }
         return playerGolem;
     }
