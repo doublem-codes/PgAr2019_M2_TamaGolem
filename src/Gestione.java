@@ -15,10 +15,12 @@ public class Gestione {
                                                 "\n-SE TRA 9 E 10:DIFFICOLTA DIFFICLE" +
                                                 "\n-SE MAGGIORE DI 10 SI POTREBBE COMPROMETTERE IL GIOCO";
 
-    private static String err_p = "--- ERRORE DI INSERIMENTO PIETRE PERCHE' SONO UGUALI TRA I DUE GOLEM ---";
+    private static String err_p = "--- ERRORE DI INSERIMENTO PIETRE PERCHE' SONO UGUALI TRA I DUE GOLEM ---" +
+                                  "\n--- RICARICA PIETRE NELLA SACCA ---";
 
     private static String abb_text="\n! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !\n";
     private static String abb_capo = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+
     //inserimento caratteri escape del loop do gioco
     private static char charUscita = 'E';//carattere uscita
     private static char charNuovo = 'N';//carattere nuova partita
@@ -58,9 +60,8 @@ public class Gestione {
         System.out.println(gen_eql);
         // equilibrio.generaEquilibrio(numeroElementi);
         // int vita = equilibrio.getsupW();
-
         System.out.println(gen_par);
-        partita = new Partita(numeroElementi,nomeElementi,play1,play2,0);//sistemare con supW ottenuto da equilibrio
+        partita = new Partita(numeroElementi,nomeElementi,play1,play2,0);
 
 
     }
@@ -79,25 +80,27 @@ public class Gestione {
 
         while (controlloElemntiGiocatori(golem1,golem2))
         {
+            System.out.println(err_p);
             for(int j=0; j<partita.getNumeroPietreGolem();j++)
             {
                 partita.getSacca().add(partita.getPlayer1Golem().get(golem1).getPietre().get(j));
                 partita.getSacca().add(partita.getPlayer2Golem().get(golem2).getPietre().get(j));
             }
-            System.out.println(err_p);
             System.out.println("GIOCATORE "+partita.getPlayer1() + " RINSERIRE PIETRE DEL PRIMO GOLEM SCHIERATO");
             partita.getPlayer1Golem().get(golem1).setPietre(acquisiciElementiGolem());
             System.out.println("GIOCATORE "+partita.getPlayer2() + " RINSERIRE PIETRE DEL PRIMO GOLEM SCHIERATO");
             partita.getPlayer2Golem().get(golem2).setPietre(acquisiciElementiGolem());
         }
 
-
+        int danno1Tot=0;
+        int danno2Tot=0;
         do {
             int vita1Tot = partita.getPlayer1Golem().get(golem1).getVita();
             int vita2Tot = partita.getPlayer2Golem().get(golem2).getVita();
             int pietre = 0;
             int danni1 = 0;
             int danni2 = 0;
+
             do {
                 int vita1 = partita.getPlayer1Golem().get(golem1).getVita();
                 int vita2 = partita.getPlayer2Golem().get(golem2).getVita();
@@ -111,6 +114,8 @@ public class Gestione {
                 //danni1 = equilibrio.getDanniX(pietra1);
                 //danni2 = equilibrio.getDanniY(pietra2);
 
+                danno1Tot += danni1;
+                danno2Tot += danni2;
                  vita1 += danni1;
                  vita2 += danni2;
 
@@ -131,12 +136,12 @@ public class Gestione {
                     perdente = partita.getPlayer1();
                     break;
                 }
-                int danno = vita1Tot - partita.getPlayer1Golem().get(golem1).getVita();
-                System.out.println("DANNI ARRECATI AL GOLEM DEL GIOCATORE "+ partita.getPlayer1()+ " SONO "+danno);
-                System.out.println("VITA RIMASTA AL GOLMEN " +golem1+" è: " +partita.getPlayer1Golem().get(golem1).getVita());
 
-                System.out.println(partita.getPlayer1() + " SCEGLERE PIETRE DEL NUOVO GOLEM DA SCHIERARE");
+                System.out.println("DANNI ARRECATI AL GOLEM DEL GIOCATORE "+ partita.getPlayer1()+ " SONO "+ danno1Tot);
+                System.out.println("VITA RIMASTA AL GOLMEN " +golem1+" è: " +partita.getPlayer1Golem().get(golem1).getVita());
+                danno1Tot = 0;
                 golem1++;
+                System.out.println(partita.getPlayer1() + " SCEGLERE PIETRE DEL NUOVO GOLEM DA SCHIERARE");
                 partita.getPlayer1Golem().get(golem1).setPietre(acquisiciElementiGolem());
                 while (controlloElemntiGiocatori(golem1, golem2))
                 {
@@ -157,11 +162,11 @@ public class Gestione {
                     vincitore= partita.getPlayer1();
                     break;
                 }
-                int danno = vita1Tot - partita.getPlayer2Golem().get(golem2).getVita();
-                System.out.println("DANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer2()+ " SONO " + danno);
+                System.out.println("DANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer2()+ " SONO " + danno2Tot);
                 System.out.println("VITA RIMASTA AL GOLMEN " +golem1+" è: " +partita.getPlayer2Golem().get(golem2).getVita());
-                System.out.println(partita.getPlayer2() + " SCEGLERE PIETRE DEL NUOVO GOLEM DA SCHIERARE");
                 golem2++;
+                danno2Tot = 0;
+                System.out.println(partita.getPlayer2() + " SCEGLERE PIETRE DEL NUOVO GOLEM DA SCHIERARE");
                 partita.getPlayer2Golem().get(golem2).setPietre(acquisiciElementiGolem());
                 while (controlloElemntiGiocatori(golem1, golem2))
                 {
