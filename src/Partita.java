@@ -29,11 +29,12 @@ public class Partita {
         this.numeroPietreSacca = setNumeroPietreSacca();
         this.numeroPietreTipoSacca =setNumeroPietreTipoSacca() ;
         this.sacca = setSacca();
-        this.player1Golem = setPlayerGolem();
-        this.player2Golem = setPlayerGolem();
+        this.player1Golem = setPlayerGolem(numeroGolem);
+        this.player2Golem = setPlayerGolem(numeroGolem);
     }
 
     private int setNumeroGolem() {
+        if (numeroElementi==3) return 1;
         return((this.numeroElementi - 1) * (this.numeroElementi - 2)) / (2 * (this.numeroPietreGolem));
     }
 
@@ -45,9 +46,9 @@ public class Partita {
         return(this. numeroPietreSacca / this.numeroPietreGolem);
     }
 
-    private ArrayList<Golem> setPlayerGolem() {
-        ArrayList<Golem> playerGolem = new ArrayList<>(this.numeroGolem);
-        for (int i = 0; i < playerGolem.size() ; i++){
+    private ArrayList<Golem> setPlayerGolem(int numeroGolem) {
+        ArrayList<Golem> playerGolem = new ArrayList<>();
+        for (int i = 0; i < numeroGolem ; i++){
             Golem golem = new Golem();
             golem.setVita(this.vitaset);
             playerGolem.add(golem);
