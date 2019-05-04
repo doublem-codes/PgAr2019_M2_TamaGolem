@@ -116,13 +116,13 @@ public class Partita {
     }
 
     public int getIndiceSacca(String elemento){
-        int index=0;
+        int index = 0;
         for (String elementoSacca : this.sacca){
             if(elementoSacca.equals(elemento)){
                 return index;
             }
             index++;
         }
-        return -1;
+        return 0;
     }
 }
