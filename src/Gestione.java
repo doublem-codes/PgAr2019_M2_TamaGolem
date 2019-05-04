@@ -77,20 +77,21 @@ public class Gestione {
     /**
      * fase2
      * metodo per il controllo flusso di gioco
+     * iterazione tra i golem dei due giocatori
      */
 
     public void fase2(){
         System.out.println(start_par);//inizio partita
-        int golem1=0 , golem2=0;
-        String stmapaScelta = str_scelta;
+        int golem1=0 , golem2=0; //set primo golem
+        String stmapaScelta = str_scelta; //stringa uscita
         do {
             System.out.println(str_giocatore+partita.getPlayer1() + stmapaScelta);
-            partita.getPlayer1Golem().get(golem1).setPietre(acquisiciElementiGolem());
+            partita.getPlayer1Golem().get(golem1).setPietre(acquisisciPietreGolem());
             System.out.println(abb_capo);
             System.out.println(str_giocatore+partita.getPlayer2() + stmapaScelta);
-            partita.getPlayer2Golem().get(golem2).setPietre(acquisiciElementiGolem());
-            stmapaScelta = str_rinscelta;
-        }while (controlloElementiGiocatori(golem1,golem2,true));
+            partita.getPlayer2Golem().get(golem2).setPietre(acquisisciPietreGolem());
+            stmapaScelta = str_rinscelta;//aggiornamento stringa uscita
+        }while (controlloElementiGiocatori(golem1,golem2,true));//controllo pietre golem diverse
 
         int danno1Tot=0;
         int danno2Tot=0;
@@ -139,20 +140,21 @@ public class Gestione {
                 {
                     vincitore = partita.getPlayer2();
                     perdente = partita.getPlayer1();
+                    System.out.println("DANNI ARRECATI AL GOLEM DEL GIOCATORE "+ partita.getPlayer1()+ " SONO "+ danno2Tot);
                     break;
                 }
 
-                System.out.println("DANNI ARRECATI AL GOLEM DEL GIOCATORE "+ partita.getPlayer2()+ " SONO "+ danno1Tot);
-                System.out.println("VITA RIMASTA AL GOLEN " +golem1+" è: " +partita.getPlayer1Golem().get(golem1).getVita());
+                System.out.println("DANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer2()+" DAL GOLEM DEL GIOCATORE "+ partita.getPlayer1()+" NUMERO "+golem1+ " SONO " + danno1Tot);
+                System.out.println("VITA RIMASTA AL GOLEM "+partita.getPlayer2()+" E': " +partita.getPlayer2Golem().get(golem2).getVita());
                 //creazione e set di un nuovo golem
                 danno1Tot = 0;
                 golem1++;
                 stmapaScelta = str_scelta;
                 do {
                     System.out.println(partita.getPlayer1() + stmapaScelta);
-                    partita.getPlayer1Golem().get(golem1).setPietre(acquisiciElementiGolem());
+                    partita.getPlayer1Golem().get(golem1).setPietre(acquisisciPietreGolem());
                     stmapaScelta = str_rinscelta;
-                }while (controlloElementiGiocatori(golem1, golem2,false));
+                }while (controlloElementiGiocatori(golem1, golem2,false));//controllo pietre golem diverse
                 vita1 = partita.getPlayer1Golem().get(golem1).getVita();
 
             }
@@ -163,19 +165,20 @@ public class Gestione {
                 {
                     perdente = partita.getPlayer2();
                     vincitore = partita.getPlayer1();
+                    System.out.println("DANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer2()+ " SONO " + danno1Tot);
                     break;
                 }
-                System.out.println("DANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer1()+ " SONO " + danno2Tot);
-                System.out.println("VITA RIMASTA AL GOLEm " +golem2+" è: " +partita.getPlayer2Golem().get(golem2).getVita());
+                System.out.println("DANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer1()+" DAL GOLEM DEL GIOCATORE "+ partita.getPlayer2()+" NUMERO "+golem2+ " SONO " + danno2Tot);
+                System.out.println("VITA RIMASTA AL GOLEM "+partita.getPlayer1()+" E': " +partita.getPlayer1Golem().get(golem1).getVita());
                 //creazione e set di un nuovo golem
                 golem2++;
                 danno2Tot = 0;
                 stmapaScelta = str_scelta;
                 do {
                     System.out.println(partita.getPlayer2() + stmapaScelta);
-                    partita.getPlayer2Golem().get(golem2).setPietre(acquisiciElementiGolem());
+                    partita.getPlayer2Golem().get(golem2).setPietre(acquisisciPietreGolem());
                     stmapaScelta = str_rinscelta;
-                }while (controlloElementiGiocatori(golem1, golem2,false));
+                }while (controlloElementiGiocatori(golem1, golem2,false));//controllo pietre golem diverse
                 vita2 = partita.getPlayer2Golem().get(golem2).getVita();
             }
         }while(true);
@@ -183,6 +186,10 @@ public class Gestione {
         System.out.print(end_par);//fine partita
     }
 
+    /**
+     * fase3
+     * stampa vincitore e perdente ed equilibrio
+     */
     public void fase3(){//stamoa a video del vincitore
         System.out.println(abb_text);
         System.out.println("\t\t\t\t\t IL VINCITORE E' " + vincitore);//stampa vincitore
@@ -190,11 +197,13 @@ public class Gestione {
         System.out.println("\t\t\t\t\t IL PERDENTE E' " + perdente);//stampa perdente
         System.out.println(abb_text);
         System.out.println(eql_par);
-        System.out.println("--- STAMPA INDICI ELEMENTI PER DECODIFICA TABELLA ---");
-        System.out.println("--- TABELLA EQUILIBRIO DI GIOCO ---");
         equilibrio.printMatrix(partita.getNomeElementi());//stampa a video dell'equilibrio di gioco_________________!!!!!!!!!!!!!!!!!!!!
     }
 
+    /**
+     * metodo scelta nuova partita o uscita
+     * @return valore di escape dal loop del main true nuova partita false esci
+     */
     public boolean scelta() {
 
         System.out.println("inserire carattere \n [ " +charUscita+" ] : se si vuole uscire \n [ "+charNuovo+" ] : se si vuole inziare una nuova partita ");
@@ -203,12 +212,6 @@ public class Gestione {
             input = it.unibs.fp.mylib.InputDati.leggiChar("rinserire");//rinserimento dato
         }
         return input != charUscita;
-    }
-
-    private void stampaElementi(){
-        for(int i = 0 ; i<partita.getNomeElementi().size();i++){
-            System.out.println("elemento " + (i+1) + " : " + partita.getNomeElementi().get(i));
-        }
     }
 
     /**
@@ -272,28 +275,33 @@ public class Gestione {
         return false;
     }
 
+    /**
+     * metodo utilizzato per l'aquisizone degli elementi del golem
+     * una volta inserito si rimuove dalla sacca se c'è se no si richiede
+     * @return arraylist con gli elenti del golem
+     */
 
-    private ArrayList<String> acquisiciElementiGolem(){
+    private ArrayList<String> acquisisciPietreGolem(){
         ArrayList<String>elementi = new ArrayList<>();
         do {
             stampaSacca(partita.getSacca());
             String elemento;
             boolean isFind=true;
             do {
-                elemento = it.unibs.fp.mylib.InputDati.leggiStringaNonVuota("inserire nome pietra numero" + (elementi.size() + 1));
-                for (String nomeElemento :partita.getNomeElementi()) {
+                elemento = it.unibs.fp.mylib.InputDati.leggiStringaNonVuota("inserire nome pietra numero" + (elementi.size() + 1)); //lettura elemento
+                for (String nomeElemento :partita.getNomeElementi()) {//ricerca elemento in arraylist elementi
                     if(elemento.equals(nomeElemento)) isFind = false;
                 }
             }while (isFind);
             int i;
-            for (i = 0; i < partita.getSacca().size(); i++) {
+            for (i = 0; i < partita.getSacca().size(); i++) {//ricerca elemento in sacca
                 if (elemento.equals(partita.getSacca().get(i))) {
-                    elementi.add(elemento);
+                    elementi.add(elemento); //aggiunta ad elemnti
+                    partita.getSacca().remove(i); //rimozione da sacca
                     break;
                 }
             }
-            partita.getSacca().remove(i);
-        }while(elementi.size() != partita.getNumeroPietreGolem());
+        }while(elementi.size() != partita.getNumeroPietreGolem());//controllo elementi lungo come numero pietre golem
         return elementi;
     }
 }
