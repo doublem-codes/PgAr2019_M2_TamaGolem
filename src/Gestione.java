@@ -194,7 +194,7 @@ public class Gestione {
         System.out.println("--- STAMPA INDICI ELEMENTI PER DECODIFICA TABELLA ---");
         stampaElementi();
         System.out.println("--- TABELLA EQUILIBRIO DI GIOCO ---");
-        equilibrio.printMatrix();//stampa a video dell'equilibrio di gioco_________________!!!!!!!!!!!!!!!!!!!!
+        equilibrio.printMatrix(partita.getNomeElementi());//stampa a video dell'equilibrio di gioco_________________!!!!!!!!!!!!!!!!!!!!
     }
 
     public boolean scelta() {

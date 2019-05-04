@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -5,10 +6,9 @@ public class Equilibrio {
     Random random = new Random();
     private int[][] iterazioneElementi;
 
-    public void generaEquilibrio(int numElemnti) {
-        iterazioneElementi = new int[numElemnti][numElemnti];
-        inserisciElementi(numElemnti);
-        printMatrix(iterazioneElementi);
+    public void generaEquilibrio(int numElementi) {
+        iterazioneElementi = new int[numElementi][numElementi];
+        inserisciElementi(numElementi);
     }
 
     private boolean isCorrect=false;
@@ -104,14 +104,69 @@ public class Equilibrio {
 
     }
 
-    public boolean printMatrix(int[][] matrix){
-        for(int i=0; i<matrix.length;i++){
-            for(int j=0; j< matrix.length; j++){
-                System.out.printf("%10d",matrix[i][j]);
+    public void printMatrix(ArrayList<String> nomiElementi){
+
+        int max=0;
+        for(String str : nomiElementi){
+            int length=str.length()+2;
+            if(length>max){
+                max=length;
+            }
+        }
+        int count2=max;
+        do{
+            System.out.print(" ");
+            count2--;
+        }while(count2>=1);
+
+        for(String str : nomiElementi){
+            int length=str.length();
+            printSpazi(length,max,false);
+            System.out.print(str);
+            printSpazi(length,max,true);
+        }
+
+        System.out.println();
+
+
+
+        for(int i=0; i<iterazioneElementi.length;i++){
+            printSpazi(nomiElementi.get(i).length(),max,false);
+            System.out.print(nomiElementi.get(i));
+            printSpazi(nomiElementi.get(i).length(),max,true);
+            for(int j=0; j< iterazioneElementi.length; j++){
+                int num=iterazioneElementi[i][j];
+                String str= String.valueOf(num);
+                printSpazi(str.length(),max,false);
+                System.out.print(iterazioneElementi[i][j]);
+                printSpazi(str.length(),max,true);
             }
             System.out.println();
         }
-        return false;
+    }
+
+    private void printSpazi(int length, int max, boolean isAfter){
+        int numSpazi=0;
+        if(!isAfter) {
+
+        numSpazi=(int)((max-length)/2);
+        do{
+            System.out.print(" ");
+            numSpazi--;
+        }while(numSpazi>=1);
+        }
+
+        if(isAfter){
+            numSpazi=(int)((max-length)/2);
+            int numSpaziDopo=max-(numSpazi+length);
+            do{
+                System.out.print(" ");
+                numSpaziDopo--;
+            }while(numSpaziDopo>=1);
+        }
+
+
+
     }
 
     private int cercaMaggiore(int[] array, boolean isSubisce, int zeroIndex){
@@ -238,6 +293,17 @@ public class Equilibrio {
         }
 
         return index;
+    }
+
+
+    public int cercaMassimoMatrice(){
+        //valore massimo in modulo
+        return 1;
+    }
+
+    public int danni(int elemento1, int elemento2){
+
+        return 1;
     }
 
 }
