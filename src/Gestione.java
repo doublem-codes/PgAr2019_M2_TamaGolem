@@ -58,8 +58,8 @@ public class Gestione {
         }
 
         System.out.println(gen_eql);
-        // equilibrio.generaEquilibrio(numeroElementi);
-        // int vita = equilibrio.getsupW();
+        equilibrio.generaEquilibrio(numeroElementi);
+        //int vita = equilibrio.getsupW();
         System.out.println(gen_par);
         partita = new Partita(numeroElementi,nomeElementi,play1,play2,0);
 
@@ -194,7 +194,7 @@ public class Gestione {
         System.out.println("--- STAMPA INDICI ELEMENTI PER DECODIFICA TABELLA ---");
         stampaElementi();
         System.out.println("--- TABELLA EQUILIBRIO DI GIOCO ---");
-        //equilibrio.printMatrix();//stampa a video dell'equilibrio di gioco_________________!!!!!!!!!!!!!!!!!!!!
+        equilibrio.printMatrix();//stampa a video dell'equilibrio di gioco_________________!!!!!!!!!!!!!!!!!!!!
     }
 
     public boolean scelta() {

@@ -4,13 +4,11 @@ import java.util.Random;
 public class Equilibrio {
     Random random = new Random();
     private int[][] iterazioneElementi;
-    Partita partita = new Partita();
 
-    public void generaEquilibrio() {
-        iterazioneElementi = new int[6][6];
-        inserisciElementi(6);//partita.getNumeroElementi()
+    public void generaEquilibrio(int numElemnti) {
+        iterazioneElementi = new int[numElemnti][numElemnti];
+        inserisciElementi(numElemnti);
         printMatrix(iterazioneElementi);
-
     }
 
     private boolean isCorrect=false;
@@ -40,7 +38,7 @@ public class Equilibrio {
 
         }
         if(sommaArrayPositivi(iterazioneElementi[iterazioneElementi.length-1])+sommaArrayNegativi(iterazioneElementi[iterazioneElementi.length-1])!=0){
-            inserisciElementi(6);
+            inserisciElementi(numElementi);
         }
 
         return true;
