@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.lang.*;
 public class Partita {
 
     private int numeroElementi;  // min 3 max meglio 10
@@ -7,16 +8,13 @@ public class Partita {
     private int numeroPietreSacca;
     private int numeroPietreTipoSacca;
     private int vitaset;//da implementare
+
     private String player1;
     private String player2;
     private ArrayList<Golem> player1Golem = new ArrayList<>();
     private ArrayList<Golem> player2Golem = new ArrayList<>();
     private ArrayList<String> sacca = new ArrayList<>();
     private ArrayList<String> nomeElementi = new ArrayList<>();
-
-    public Partita(){
-
-    }
 
     public Partita(int numeroElementi , ArrayList<String> nomeElementi, String player1, String player2, int vita){
         this.player1 = player1;
@@ -25,7 +23,7 @@ public class Partita {
         this.nomeElementi = nomeElementi;
         this.vitaset = vita;
         this.numeroPietreGolem = setNumeroPietreGolem();
-        this.numeroGolem = setNumeroGolem();//errore
+        this.numeroGolem = setNumeroGolem();
         this.numeroPietreSacca = setNumeroPietreSacca();
         this.numeroPietreTipoSacca =setNumeroPietreTipoSacca() ;
         this.sacca = setSacca();
@@ -34,16 +32,16 @@ public class Partita {
     }
 
     private int setNumeroGolem() {
-        if (numeroElementi==3) return 1;
-        return((this.numeroElementi - 1) * (this.numeroElementi - 2)) / (2 * (this.numeroPietreGolem));
+        return((int)Math.ceil((double)((this.numeroElementi - 1) * (this.numeroElementi - 2)) / (2 * (this.numeroPietreGolem))));
     }
 
     private int setNumeroPietreSacca() {
-       return ((2 * this.numeroGolem * this.numeroPietreGolem)/this.numeroElementi)*(this.numeroElementi);
+
+       return (int)(Math.ceil((double)((2 * this.numeroGolem * this.numeroPietreGolem)/this.numeroElementi))*(this.numeroElementi));
     }
 
     private int setNumeroPietreTipoSacca() {
-        return(this. numeroPietreSacca / this.numeroPietreGolem);
+        return(this. numeroPietreSacca / this.numeroElementi);
     }
 
     private ArrayList<Golem> setPlayerGolem(int numeroGolem) {
@@ -78,7 +76,7 @@ public class Partita {
 
 
     public int setNumeroPietreGolem() {
-        return  ((this.numeroElementi+1)/3) + 1;
+        return (int)Math.ceil((((double) this.numeroElementi+1)/3)) + 1;
     }
 
 
@@ -97,6 +95,7 @@ public class Partita {
     public int getNumeroPietreTipoSacca() {
         return numeroPietreTipoSacca;
     }
+
     public String getPlayer1() {
         return player1;
     }
@@ -116,8 +115,14 @@ public class Partita {
         return nomeElementi;
     }
 
-
-
-
-
+    public int getIndiceSacca(String elemento){
+        int index=0;
+        for (String elementoSacca : this.sacca){
+            if(elementoSacca.equals(elemento)){
+                return index;
+            }
+            index++;
+        }
+        return -1;
+    }
 }
