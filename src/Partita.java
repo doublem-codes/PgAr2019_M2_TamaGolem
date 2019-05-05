@@ -37,7 +37,7 @@ public class Partita {
 
     private int setNumeroPietreSacca() {
 
-       return (int)(Math.ceil((double)((2 * this.numeroGolem * this.numeroPietreGolem)/this.numeroElementi))*(this.numeroElementi));
+       return (int)((Math.ceil((((double) (2 * this.numeroGolem * this.numeroPietreGolem))/(double)this.numeroElementi)))*(this.numeroElementi));
     }
 
     private int setNumeroPietreTipoSacca() {
