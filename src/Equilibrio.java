@@ -257,12 +257,18 @@ public class Equilibrio {
     }
 
     public int cercaMassimoMatrice(){
-        //valore massimo in modulo
-        return 1;
+        int maxNum = iterazioneElementi[0][0];
+        for (int i = 0; i < iterazioneElementi.length; i++) {
+            for (int j = 0; j < iterazioneElementi[i].length; j++) {
+                if (maxNum < iterazioneElementi[i][j]) {
+                    maxNum = iterazioneElementi[i][j];
+                }
+            }
+        }
+        return maxNum;
     }
 
     public int danni(int elemento1, int elemento2){
-
-        return 1;
+        return iterazioneElementi[elemento1][elemento2];
     }
 }
