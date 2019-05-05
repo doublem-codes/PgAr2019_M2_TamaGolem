@@ -11,10 +11,10 @@ public class Partita {
 
     private String player1;
     private String player2;
-    private ArrayList<Golem> player1Golem = new ArrayList<>();
-    private ArrayList<Golem> player2Golem = new ArrayList<>();
-    private ArrayList<String> sacca = new ArrayList<>();
-    private ArrayList<String> nomeElementi = new ArrayList<>();
+    private ArrayList<Golem> player1Golem ;
+    private ArrayList<Golem> player2Golem ;
+    private ArrayList<String> sacca ;
+    private ArrayList<String> nomeElementi ;
 
     public Partita(int numeroElementi , ArrayList<String> nomeElementi, String player1, String player2, int vita){
         this.player1 = player1;
@@ -65,35 +65,14 @@ public class Partita {
         return sacca;
     }
 
-    public void setGolemPietre(ArrayList<String> pietre,int index,boolean isOne){
-        if (isOne)
-        {
-            player1Golem.get(index).setPietre(pietre);
-        }else {
-            player2Golem.get(index).setPietre(pietre);
-        }
-    }
-
-
     public int setNumeroPietreGolem() {
         return (int)Math.ceil((((double) this.numeroElementi+1)/3)) + 1;
-    }
-
-
-    public int getNumeroElementi() {
-        return numeroElementi;
     }
     public int getNumeroGolem() {
         return numeroGolem;
     }
     public int getNumeroPietreGolem() {
         return numeroPietreGolem;
-    }
-    public int getNumeroPietreSacca() {
-        return numeroPietreSacca;
-    }
-    public int getNumeroPietreTipoSacca() {
-        return numeroPietreTipoSacca;
     }
 
     public String getPlayer1() {
