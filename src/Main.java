@@ -12,6 +12,6 @@ public class Main {
 
         }while(gestioneFasi.scelta());
 
-        System.out.print("--- FASE DI GIOCO TERMINATA ---");
+        System.out.println("--- FASE DI GIOCO TERMINATA ---");
     }
 }

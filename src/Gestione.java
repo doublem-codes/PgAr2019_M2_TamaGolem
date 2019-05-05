@@ -110,18 +110,13 @@ public class Gestione {
                     if(partita.getPlayer2Golem().get(golem2).getPietre().get(pietre).equals(partita.getNomeElementi().get(i))) break;
                     pietra2++;
                 }
-
-                // - danno a 1
-                // + danno a 2
-
-
                 int danno = equilibrio.danni(pietra1,pietra2);
 
                 if (danno>0){
                     vita2 -= danno;
                     danno1Tot += danno;
                 }else{
-                    vita1 -= danno;
+                    vita1 += danno;
                     danno = -danno;
                     danno2Tot += danno;
 
@@ -132,7 +127,8 @@ public class Gestione {
 
                 pietre++;
                 if(pietre == partita.getNumeroPietreGolem() ) pietre = 0;
-            } while (partita.getPlayer1Golem().get(golem1).getVita() >= 0 && partita.getPlayer2Golem().get(golem2).getVita() >= 0);
+
+            } while (partita.getPlayer1Golem().get(golem1).getVita() > 0 && partita.getPlayer2Golem().get(golem2).getVita() > 0);
 
             if (partita.getPlayer1Golem().get(golem1).getVita() <= 0)
             {
