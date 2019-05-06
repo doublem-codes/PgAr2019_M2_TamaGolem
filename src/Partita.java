@@ -94,6 +94,10 @@ public class Partita {
         return nomeElementi;
     }
 
+    public int getVitaset() {
+        return vitaset;
+    }
+
     public int getIndiceSacca(String elemento){
         int index = 0;
         for (String elementoSacca : this.sacca){

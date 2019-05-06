@@ -135,7 +135,16 @@ public class Gestione {
         int vita1 = partita.getPlayer1Golem().get(golem1).getVita();//settaggio vita1
         int vita2 = partita.getPlayer2Golem().get(golem2).getVita();//settaggio vita2
         do {
+
             int pietre = 0;//posizione pietre di gioco
+            System.out.println("--- NUOVO SCONTRO ---\n VITA DEI GOLEM E':");
+            System.out.print("GOLEM "+golem1+" DEL GIOCATORE " + partita.getPlayer1());
+            stampaVita(vita1);
+            System.out.print("GOLEM "+golem2+" DEL GIOCATORE " + partita.getPlayer2());
+            stampaVita(vita2);
+            System.out.println("--- FASE DI SCONTRO ---\n");
+
+
             do {
                 int pietra1 =0;//indice della matrice per aquisire i danni
                 for (int i = 0;i<partita.getNomeElementi().size();i++){
@@ -159,6 +168,12 @@ public class Gestione {
                     danno2Tot += danno;
                 }
 
+                System.out.println("\n" + partita.getPlayer1Golem().get(golem1).getPietre().get(pietre) + " --------> "+partita.getPlayer2Golem().get(golem2).getPietre().get(pietre));
+                System.out.print("GOLEM "+golem1+" DEL GIOCATORE " + partita.getPlayer1());
+                stampaVita(vita1);
+                System.out.print("GOLEM "+golem2+" DEL GIOCATORE " + partita.getPlayer2());
+                stampaVita(vita2);
+
                 partita.getPlayer1Golem().get(golem1).setVita(vita1);//aggiornamento vita1
                 partita.getPlayer2Golem().get(golem2).setVita(vita2);//aggiornamento vita2
 
@@ -167,17 +182,23 @@ public class Gestione {
 
             } while (partita.getPlayer1Golem().get(golem1).getVita() > 0 && partita.getPlayer2Golem().get(golem2).getVita() > 0);
 
+
+
+
+
+
             if (partita.getPlayer1Golem().get(golem1).getVita() <= 0)//giocatore 1 aggiormamento statistiche o scelta nuovo golem
             {
                 if (golem1 == partita.getNumeroGolem()-1)//asseganzione vincitore
                 {
                     vincitore = partita.getPlayer2();
                     perdente = partita.getPlayer1();
-                    System.out.println("\nDANNI ARRECATI AL GOLEM DEL GIOCATORE "+ partita.getPlayer1()+" DAL GOLEM DEL GIOCATORE "+ partita.getPlayer2()+ " SONO "+ danno2Tot);
+                    System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem1+" MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer1()+" SONO " + danno1Tot);
+                    System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem2+"MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer2()+" SONO " + danno2Tot);
                     break;
                 }
 
-                System.out.println("\nDANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer2()+" DAL GOLEM DEL GIOCATORE "+ partita.getPlayer1()+" NUMERO "+golem1+ " SONO " + danno1Tot);
+                System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem1+" MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer1()+" SONO " + danno1Tot);
                 System.out.println("VITA RIMASTA AL GOLEM "+partita.getPlayer2()+" E': " +partita.getPlayer2Golem().get(golem2).getVita());
                 //creazione e set di un nuovo golem
                 danno1Tot = 0;
@@ -199,10 +220,11 @@ public class Gestione {
                 {
                     perdente = partita.getPlayer2();
                     vincitore = partita.getPlayer1();
-                    System.out.println("\nDANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer2()+" DAL GOLEM DEL GIOCATORE "+ partita.getPlayer1()+" SONO " + danno1Tot);
+                    System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem1+" MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer1()+" SONO " + danno1Tot);
+                    System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem2+"MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer2()+" SONO " + danno2Tot);
                     break;
                 }
-                System.out.println("\nDANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer1()+" DAL GOLEM DEL GIOCATORE "+ partita.getPlayer2()+" NUMERO "+golem2+ " SONO " + danno2Tot);
+                System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem2+"MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer2()+" SONO " + danno2Tot);
                 System.out.println("VITA RIMASTA AL GOLEM "+partita.getPlayer1()+" E': " +partita.getPlayer1Golem().get(golem1).getVita());
                 //creazione e set di un nuovo golem
                 golem2++;//invocazione nuovo golem
@@ -390,4 +412,22 @@ public class Gestione {
             System.out.println(arrayElementi[i]);
         }
     }
+
+    /**
+     *metodo per stampare la vita che rimane al golem
+     * @param vita numero di vita che ha il golem
+     */
+    private void stampaVita(int vita) {
+        System.out.print('[');
+        for (int i = 0; i < partita.getVitaset(); i++){
+            if (i < vita) {
+                System.out.print(" * ");
+
+            } else {
+                System.out.print(" _ ");
+            }
+        }
+        System.out.print("]\n");
+    }
+
 }
