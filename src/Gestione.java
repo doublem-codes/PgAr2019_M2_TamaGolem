@@ -1,4 +1,4 @@
-import it.unibs.fp.mylib.InputDati;
+
 
 import java.util.ArrayList;
 
@@ -7,6 +7,7 @@ import java.util.ArrayList;
 //inserimento nomi standar;
 
 public class Gestione {
+
 
     //inserimento stringhe di comunicazione
     private static String init_par = "\n--- INIZIALIZZAZIONE PARTITA ---\n";
