@@ -3,6 +3,8 @@ import java.util.Random;
 
 public class Equilibrio {
     Random random = new Random();
+    MatrixAdministration matrixAdministration=new MatrixAdministration();
+    ArrayAdministration arrayAdministration = new ArrayAdministration();
     private int[][] iterazioneElementi;
     private boolean isCorrect=false;
 
@@ -29,9 +31,9 @@ public class Equilibrio {
         for(int j=0;j<iterazioneElementi.length-1;j++){
             indiceCorretto(j);
             isCorrect=false;
-            copiaValore(j);
+            iterazioneElementi = matrixAdministration.transposeMatrix(j,iterazioneElementi,true);
         }
-        if(sommaArrayPositivi(iterazioneElementi[iterazioneElementi.length-1])+sommaArrayNegativi(iterazioneElementi[iterazioneElementi.length-1])!=0){
+        if((arrayAdministration.sumPositiveElementsOfArray(iterazioneElementi[iterazioneElementi.length-1])+arrayAdministration.sumNegativeElementsOfArray(iterazioneElementi[iterazioneElementi.length-1])!=0)){
             inserisciElementi(numElementi);
         }
         return true;
@@ -90,58 +92,7 @@ public class Equilibrio {
     }
 
     public void printMatrix(ArrayList<String> nomiElementi){
-        int max = 0;
-        for(String str : nomiElementi){
-            int length = str.length()+2;
-            if(length > max){
-                max = length;
-            }
-        }
-        int count2 = max;
-        do{
-            System.out.print(" ");
-            count2--;
-        }while(count2 >= 1);
-
-        for(String str : nomiElementi){
-            int length = str.length();
-            printSpazi(length,max,false);
-            System.out.print(str);
-            printSpazi(length,max,true);
-        }
-        System.out.println();
-        for(int i = 0; i < iterazioneElementi.length; i++){
-            printSpazi(nomiElementi.get(i).length(),max,false);
-            System.out.print(nomiElementi.get(i));
-            printSpazi(nomiElementi.get(i).length(),max,true);
-            for(int j = 0; j< iterazioneElementi.length; j++){
-                int num = iterazioneElementi[i][j];
-                String str = String.valueOf(num);
-                printSpazi(str.length(),max,false);
-                System.out.print(iterazioneElementi[i][j]);
-                printSpazi(str.length(),max,true);
-            }
-            System.out.println();
-        }
-    }
-
-    private void printSpazi(int length, int max, boolean isAfter){
-        int numSpazi;
-        if(!isAfter) {
-            numSpazi=((max-length)/2);
-            do{
-                System.out.print(" ");
-                numSpazi--;
-            }while(numSpazi>=1);
-        }
-        if(isAfter){
-            numSpazi = ((max-length)/2);
-            int numSpaziDopo = max-(numSpazi+length);
-            do{
-                System.out.print(" ");
-                numSpaziDopo--;
-            }while(numSpaziDopo >= 1);
-        }
+       matrixAdministration.printMatrix(iterazioneElementi,nomiElementi);
     }
 
     private int cercaMaggiore(int[] array, boolean isSubisce, int zeroIndex){
@@ -165,42 +116,11 @@ public class Equilibrio {
         return index;
     }
 
-    private int sommaArrayPositivi(int[] array) {
-        int sum = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] > 0) {
-                sum += array[i];
-            }
-        }
-        return sum;
-    }
-
-    private int sommaArrayNegativi(int[] array) {
-        int sum = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] < 0) {
-                sum += array[i];
-            }
-        }
-        return sum;
-    }
-
-    private void copiaValore(int zeroIndex){
-        for(int i = zeroIndex+1;i<iterazioneElementi.length;i++){
-            int a = iterazioneElementi[zeroIndex][i];
-            iterazioneElementi[i][zeroIndex] = -a;
-        }
-    }
-
     private boolean indiceCorretto(int zeroIndex ){
         int index;
         if(!isCorrect){
             isCorrect = false;
             index = index(zeroIndex);
-            if(index<zeroIndex){
-                //Errore ogni tanto torna un index < dello zeroIndex
-                System.out.println("");
-            }
             int sumBefore = 0, sumAfter = 0;
             for(int i=0; i<index;i++){
                 sumBefore = sumBefore+iterazioneElementi[zeroIndex][i];
@@ -220,8 +140,8 @@ public class Equilibrio {
             isCorrect = true;
             index = index(zeroIndex);
             int numSubisce, numDanneggia;
-            numSubisce = sommaArrayNegativi(iterazioneElementi[zeroIndex]);
-            numDanneggia = sommaArrayPositivi(iterazioneElementi[zeroIndex]);
+            numSubisce = arrayAdministration.sumNegativeElementsOfArray(iterazioneElementi[zeroIndex]);
+            numDanneggia = arrayAdministration.sumPositiveElementsOfArray(iterazioneElementi[zeroIndex]);
             int sum = numSubisce + numDanneggia;
 
             if (iterazioneElementi[zeroIndex][index] + sum <= iterazioneElementi.length - 1 && iterazioneElementi[zeroIndex][index] + sum != 0 && iterazioneElementi[zeroIndex][index] + sum >= -(iterazioneElementi.length - 1)) {
@@ -257,15 +177,7 @@ public class Equilibrio {
     }
 
     public int cercaMassimoMatrice(){
-        int maxNum = iterazioneElementi[0][0];
-        for (int i = 0; i < iterazioneElementi.length; i++) {
-            for (int j = 0; j < iterazioneElementi[i].length; j++) {
-                if (maxNum < iterazioneElementi[i][j]) {
-                    maxNum = iterazioneElementi[i][j];
-                }
-            }
-        }
-        return maxNum;
+        return matrixAdministration.searchMaximum(iterazioneElementi);
     }
 
     public int danni(int elemento1, int elemento2){
