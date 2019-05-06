@@ -11,6 +11,7 @@ public class Partita {
 
     private String player1;
     private String player2;
+
     private ArrayList<Golem> player1Golem ;
     private ArrayList<Golem> player2Golem ;
     private ArrayList<String> sacca ;
@@ -108,4 +109,9 @@ public class Partita {
         }
         return 0;
     }
+
+    public int getNumeroElementi() {
+        return numeroElementi;
+    }
+
 }
