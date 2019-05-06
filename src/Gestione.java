@@ -120,7 +120,7 @@ public class Gestione {
         System.out.println(start_par);//inizio partita
         int golem1=0 , golem2=0; //set primo golem
         String stmapaScelta = str_scelta; //stringa uscita
-        do {
+        do {//ciclo inserimento pietre due giocatori con controllo diversità
             System.out.println(str_giocatore+partita.getPlayer1() + stmapaScelta );
             partita.getPlayer1Golem().get(golem1).setPietre(acquisisciPietreGolem());
             System.out.println(abb_capo);
@@ -130,44 +130,44 @@ public class Gestione {
         }while (controlloElementiGiocatori(golem1,golem2,true));//controllo pietre golem diverse
         System.out.println(abb_capo);
 
-        int danno1Tot=0;
-        int danno2Tot=0;
-        int vita1 = partita.getPlayer1Golem().get(golem1).getVita();
-        int vita2 = partita.getPlayer2Golem().get(golem2).getVita();
+        int danno1Tot=0;//inizializzazione danno1
+        int danno2Tot=0;//inizializzazione danno2
+        int vita1 = partita.getPlayer1Golem().get(golem1).getVita();//settaggio vita1
+        int vita2 = partita.getPlayer2Golem().get(golem2).getVita();//settaggio vita2
         do {
-            int pietre = 0;
+            int pietre = 0;//posizione pietre di gioco
             do {
-                int pietra1 =0;
+                int pietra1 =0;//indice della matrice per aquisire i danni
                 for (int i = 0;i<partita.getNomeElementi().size();i++){
                     if(partita.getPlayer1Golem().get(golem1).getPietre().get(pietre).equals(partita.getNomeElementi().get(i))) break;
                     pietra1++;
                 }
-                int pietra2 =0;
+                int pietra2 =0;//indice della matrice per aquisire i danni
                 for (int i = 0;i<partita.getNomeElementi().size();i++){
                     if(partita.getPlayer2Golem().get(golem2).getPietre().get(pietre).equals(partita.getNomeElementi().get(i))) break;
                     pietra2++;
                 }
-                int danno = equilibrio.danni(pietra1,pietra2);
-
-                if (danno>0){
+                int danno = equilibrio.danni(pietra1,pietra2);//aquisizione danni dalla matrice
+                //se è positivo è il giocatore uno che fa danno a giocatore due
+                //se negativo e il giocatore due che fa danno a giocatore uno
+                if (danno>0){// aggiornamento statisctiche vita e danno
                     vita2 -= danno;
                     danno1Tot += danno;
                 }else{
                     vita1 += danno;
                     danno = -danno;
                     danno2Tot += danno;
-
                 }
 
-                partita.getPlayer1Golem().get(golem1).setVita(vita1);
-                partita.getPlayer2Golem().get(golem2).setVita(vita2);
+                partita.getPlayer1Golem().get(golem1).setVita(vita1);//aggiornamento vita1
+                partita.getPlayer2Golem().get(golem2).setVita(vita2);//aggiornamento vita2
 
-                pietre++;
-                if(pietre == partita.getNumeroPietreGolem() ) pietre = 0;
+                pietre++;//incremento posizione pietre dei golem
+                if(pietre == partita.getNumeroPietreGolem() ) pietre = 0;// se fuori bound la metto a zero cioè rinizio lo scorrimento
 
             } while (partita.getPlayer1Golem().get(golem1).getVita() > 0 && partita.getPlayer2Golem().get(golem2).getVita() > 0);
 
-            if (partita.getPlayer1Golem().get(golem1).getVita() <= 0)
+            if (partita.getPlayer1Golem().get(golem1).getVita() <= 0)//giocatore 1 aggiormamento statistiche o scelta nuovo golem
             {
                 if (golem1 == partita.getNumeroGolem()-1)//asseganzione vincitore
                 {
@@ -181,11 +181,11 @@ public class Gestione {
                 System.out.println("VITA RIMASTA AL GOLEM "+partita.getPlayer2()+" E': " +partita.getPlayer2Golem().get(golem2).getVita());
                 //creazione e set di un nuovo golem
                 danno1Tot = 0;
-                golem1++;
+                golem1++;//invocazione nuovo golem
                 stmapaScelta = str_scelta;
                 do {
                     System.out.println(partita.getPlayer1() + stmapaScelta );
-                    partita.getPlayer1Golem().get(golem1).setPietre(acquisisciPietreGolem());
+                    partita.getPlayer1Golem().get(golem1).setPietre(acquisisciPietreGolem());//aquisizione pietre del nuovo golem schierato
                     stmapaScelta = str_rinscelta;
                 }while (controlloElementiGiocatori(golem1, golem2,false));//controllo pietre golem diverse
                 System.out.println(abb_capo);
@@ -193,7 +193,7 @@ public class Gestione {
 
             }
 
-            if(partita.getPlayer2Golem().get(golem2).getVita() <= 0)
+            if(partita.getPlayer2Golem().get(golem2).getVita() <= 0)//giocatore 2 aggiormamento statistiche o scelta nuovo golem
             {
                 if(golem2 == partita.getNumeroGolem()-1)//asseganzione vincitore
                 {
@@ -205,12 +205,12 @@ public class Gestione {
                 System.out.println("\nDANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer1()+" DAL GOLEM DEL GIOCATORE "+ partita.getPlayer2()+" NUMERO "+golem2+ " SONO " + danno2Tot);
                 System.out.println("VITA RIMASTA AL GOLEM "+partita.getPlayer1()+" E': " +partita.getPlayer1Golem().get(golem1).getVita());
                 //creazione e set di un nuovo golem
-                golem2++;
+                golem2++;//invocazione nuovo golem
                 danno2Tot = 0;
                 stmapaScelta = str_scelta;
                 do {
                     System.out.println(partita.getPlayer2() + stmapaScelta );
-                    partita.getPlayer2Golem().get(golem2).setPietre(acquisisciPietreGolem());
+                    partita.getPlayer2Golem().get(golem2).setPietre(acquisisciPietreGolem());//aquisizione pietre del nuovo golem schierato
                     stmapaScelta = str_rinscelta;
                 }while (controlloElementiGiocatori(golem1, golem2,false));//controllo pietre golem diverse
                 System.out.println(abb_capo);
