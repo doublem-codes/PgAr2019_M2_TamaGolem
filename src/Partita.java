@@ -11,6 +11,7 @@ public class Partita {
 
     private String player1;
     private String player2;
+
     private ArrayList<Golem> player1Golem ;
     private ArrayList<Golem> player2Golem ;
     private ArrayList<String> sacca ;
@@ -94,6 +95,10 @@ public class Partita {
         return nomeElementi;
     }
 
+    public int getVitaset() {
+        return vitaset;
+    }
+
     public int getIndiceSacca(String elemento){
         int index = 0;
         for (String elementoSacca : this.sacca){
@@ -104,4 +109,9 @@ public class Partita {
         }
         return 0;
     }
+
+    public int getNumeroElementi() {
+        return numeroElementi;
+    }
+
 }

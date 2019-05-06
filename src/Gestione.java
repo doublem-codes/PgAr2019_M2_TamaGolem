@@ -27,15 +27,29 @@ public class Gestione {
                                                 "\n\n- !!! INSERIRE NUMERO MAGGORE DI 3 !!!"+
                                                 "\n- !!! SE MAGGIORE DI 10 SI POTREBBE COMPROMETTERE IL GIOCO !!!\n";
 
+    private static char charInserimentoManuale= 'M';
+    private static char charInserimentoAutomatico = 'A';
+    private static char charStampaElementi = 'S';
     private static String menu_aquisizione_elementi = "\n--- SCEGLIERE TRA ---" +
-                                                      "\n -[M] : INSERIMENTO MANUALE DEGLI ELEMENTI" +
-                                                      "\n -[S] : STAMPA SUGGERIMENTO ELEMENTI";
+                                                      "\n -["+charInserimentoManuale+"] : INSERIMENTO MANUALE DEGLI ELEMENTI" +
+                                                      "\n -["+charStampaElementi+"] : STAMPA SUGGERIMENTO ELEMENTI";
+    private static String menu_aquisizione_elementi_automatico = "\n -["+charInserimentoAutomatico+"] : INSERIMENTO ELEMENTI AUTOMATICO" ;
 
-    private static String menu_aquisizione_elementi_automatico = "\n -[A] : INSERIMENTO ELEMENTI AUTOMATICO" ;
+    private static char charNomeIn = 'N';
+    private static char charCodeIn = 'C';
+    private static String menu_inserimento_pietre = "SI VUOLE INSERIRE PIETRA PER :" +
+                                                    "\n -["+charNomeIn+"] : PER INSERIRE PIETRA TRAMITE CODICE TRA PARENTESI" +
+                                                    "\n -["+charCodeIn+"] :PER INSERIRE PIETRA TRAMITE NOME ";
+    //inserimento caratteri escape del loop del gioco
+    private static char charUscita = 'E';//carattere uscita
+    private static char charNuovo = 'N';//carattere nuova partita
+    private static String menu_scelta = "--- INSERIRE ---" +
+                                         "\n [ " +charUscita+" ] : se si vuole uscire " +
+                                         "\n [ "+charNuovo+" ] : se si vuole inziare una nuova partita ";
 
 
     private static String err_pietre = "\n\n\n--- ERRORE DI INSERIMENTO PIETRE PERCHE' SONO UGUALI TRA I DUE GOLEM ---" +
-                                  "\n--- RICARICA PIETRE NELLA SACCA ---";
+                                        "\n--- RICARICA PIETRE NELLA SACCA ---";
 
     private static String abb_text="\n! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !\n";
     private static String abb_capo = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
@@ -44,11 +58,6 @@ public class Gestione {
     private static String[] arrayElementi ={"NORMALE","FUOCO","LOTTA","ACQUA","VOLANTE","ERBA","VELENO","ELETTRO",
                                             "TERRA","PSICO","GHIACCIO","COLEOTTERO","DRAGO","SPETTRO","BUIO","ACCIAIO",
                                             "SCONOSCIUTO","OMBRA","METALLO","FERRO"};
-
-
-    //inserimento caratteri escape del loop del gioco
-    private static char charUscita = 'E';//carattere uscita
-    private static char charNuovo = 'N';//carattere nuova partita
 
     private static int minElementi = 3;
 
@@ -79,13 +88,13 @@ public class Gestione {
         if(numeroElementi >20){
             System.out.println(menu_aquisizione_elementi);
              inMenu = it.unibs.fp.mylib.InputDati.leggiChar("inserire");
-            while(inMenu != 'S' && inMenu != 'M'){//controllo dato in input
+            while(inMenu != charStampaElementi && inMenu != charInserimentoManuale){//controllo dato in input
                 inMenu = it.unibs.fp.mylib.InputDati.leggiChar("rinserire");//rinserimento dato
             }
         }else{
             System.out.println(menu_aquisizione_elementi + menu_aquisizione_elementi_automatico);
              inMenu = it.unibs.fp.mylib.InputDati.leggiChar("inserire");
-            while(inMenu != 'S' &&  inMenu != 'A' && inMenu != 'M'){//controllo dato in input
+            while(inMenu != charStampaElementi &&  inMenu != charInserimentoAutomatico && inMenu != charInserimentoManuale){//controllo dato in input
                 inMenu = it.unibs.fp.mylib.InputDati.leggiChar("rinserire");//rinserimento dato
             }
         }
@@ -122,7 +131,7 @@ public class Gestione {
         System.out.println(start_par);//inizio partita
         int golem1=0 , golem2=0; //set primo golem
         String stmapaScelta = str_scelta; //stringa uscita
-        do {
+        do {//ciclo inserimento pietre due giocatori con controllo diversità
             System.out.println(str_giocatore+partita.getPlayer1() + stmapaScelta );
             partita.getPlayer1Golem().get(golem1).setPietre(acquisisciPietreGolem());
             System.out.println(abb_capo);
@@ -132,62 +141,77 @@ public class Gestione {
         }while (controlloElementiGiocatori(golem1,golem2,true));//controllo pietre golem diverse
         System.out.println(abb_capo);
 
-        int danno1Tot=0;
-        int danno2Tot=0;
-        int vita1 = partita.getPlayer1Golem().get(golem1).getVita();
-        int vita2 = partita.getPlayer2Golem().get(golem2).getVita();
+        int danno1Tot=0;//inizializzazione danno1
+        int danno2Tot=0;//inizializzazione danno2
+        int vita1 = partita.getPlayer1Golem().get(golem1).getVita();//settaggio vita1
+        int vita2 = partita.getPlayer2Golem().get(golem2).getVita();//settaggio vita2
         do {
-            int pietre = 0;
+
+            int pietre = 0;//posizione pietre di gioco
+            System.out.println("--- NUOVO SCONTRO ---\n VITA DEI GOLEM E':");
+            System.out.print("GOLEM "+golem1+" DEL GIOCATORE " + partita.getPlayer1());
+            stampaVita(vita1);
+            System.out.print("GOLEM "+golem2+" DEL GIOCATORE " + partita.getPlayer2());
+            stampaVita(vita2);
+            System.out.println("--- FASE DI SCONTRO ---\n");
+
             do {
-                int pietra1 =0;
+                int pietra1 =0;//indice della matrice per aquisire i danni
                 for (int i = 0;i<partita.getNomeElementi().size();i++){
                     if(partita.getPlayer1Golem().get(golem1).getPietre().get(pietre).equals(partita.getNomeElementi().get(i))) break;
                     pietra1++;
                 }
-                int pietra2 =0;
+                int pietra2 =0;//indice della matrice per aquisire i danni
                 for (int i = 0;i<partita.getNomeElementi().size();i++){
                     if(partita.getPlayer2Golem().get(golem2).getPietre().get(pietre).equals(partita.getNomeElementi().get(i))) break;
                     pietra2++;
                 }
-                int danno = equilibrio.danni(pietra1,pietra2);
-
-                if (danno>0){
+                int danno = equilibrio.danni(pietra1,pietra2);//aquisizione danni dalla matrice
+                //se è positivo è il giocatore uno che fa danno a giocatore due
+                //se negativo e il giocatore due che fa danno a giocatore uno
+                if (danno>0){// aggiornamento statisctiche vita e danno
                     vita2 -= danno;
                     danno1Tot += danno;
                 }else{
                     vita1 += danno;
                     danno = -danno;
                     danno2Tot += danno;
-
                 }
 
-                partita.getPlayer1Golem().get(golem1).setVita(vita1);
-                partita.getPlayer2Golem().get(golem2).setVita(vita2);
+                System.out.println("\n" + partita.getPlayer1Golem().get(golem1).getPietre().get(pietre) + " --------> "+partita.getPlayer2Golem().get(golem2).getPietre().get(pietre));
+                System.out.print("GOLEM "+golem1+" DEL GIOCATORE " + partita.getPlayer1());
+                stampaVita(vita1);
+                System.out.print("GOLEM "+golem2+" DEL GIOCATORE " + partita.getPlayer2());
+                stampaVita(vita2);
 
-                pietre++;
-                if(pietre == partita.getNumeroPietreGolem() ) pietre = 0;
+                partita.getPlayer1Golem().get(golem1).setVita(vita1);//aggiornamento vita1
+                partita.getPlayer2Golem().get(golem2).setVita(vita2);//aggiornamento vita2
+
+                pietre++;//incremento posizione pietre dei golem
+                if(pietre == partita.getNumeroPietreGolem() ) pietre = 0;// se fuori bound la metto a zero cioè rinizio lo scorrimento
 
             } while (partita.getPlayer1Golem().get(golem1).getVita() > 0 && partita.getPlayer2Golem().get(golem2).getVita() > 0);
 
-            if (partita.getPlayer1Golem().get(golem1).getVita() <= 0)
+            if (partita.getPlayer1Golem().get(golem1).getVita() <= 0)//giocatore 1 aggiormamento statistiche o scelta nuovo golem
             {
                 if (golem1 == partita.getNumeroGolem()-1)//asseganzione vincitore
                 {
                     vincitore = partita.getPlayer2();
                     perdente = partita.getPlayer1();
-                    System.out.println("\nDANNI ARRECATI AL GOLEM DEL GIOCATORE "+ partita.getPlayer1()+" DAL GOLEM DEL GIOCATORE "+ partita.getPlayer2()+ " SONO "+ danno2Tot);
+                    System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem1+" MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer1()+" SONO " + danno1Tot);
+                    System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem2+"MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer2()+" SONO " + danno2Tot);
                     break;
                 }
 
-                System.out.println("\nDANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer2()+" DAL GOLEM DEL GIOCATORE "+ partita.getPlayer1()+" NUMERO "+golem1+ " SONO " + danno1Tot);
+                System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem1+" MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer1()+" SONO " + danno1Tot);
                 System.out.println("VITA RIMASTA AL GOLEM "+partita.getPlayer2()+" E': " +partita.getPlayer2Golem().get(golem2).getVita());
                 //creazione e set di un nuovo golem
                 danno1Tot = 0;
-                golem1++;
+                golem1++;//invocazione nuovo golem
                 stmapaScelta = str_scelta;
                 do {
                     System.out.println(partita.getPlayer1() + stmapaScelta );
-                    partita.getPlayer1Golem().get(golem1).setPietre(acquisisciPietreGolem());
+                    partita.getPlayer1Golem().get(golem1).setPietre(acquisisciPietreGolem());//aquisizione pietre del nuovo golem schierato
                     stmapaScelta = str_rinscelta;
                 }while (controlloElementiGiocatori(golem1, golem2,false));//controllo pietre golem diverse
                 System.out.println(abb_capo);
@@ -195,24 +219,25 @@ public class Gestione {
 
             }
 
-            if(partita.getPlayer2Golem().get(golem2).getVita() <= 0)
+            if(partita.getPlayer2Golem().get(golem2).getVita() <= 0)//giocatore 2 aggiormamento statistiche o scelta nuovo golem
             {
                 if(golem2 == partita.getNumeroGolem()-1)//asseganzione vincitore
                 {
                     perdente = partita.getPlayer2();
                     vincitore = partita.getPlayer1();
-                    System.out.println("\nDANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer2()+" DAL GOLEM DEL GIOCATORE "+ partita.getPlayer1()+" SONO " + danno1Tot);
+                    System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem1+" MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer1()+" SONO " + danno1Tot);
+                    System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem2+"MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer2()+" SONO " + danno2Tot);
                     break;
                 }
-                System.out.println("\nDANNI ARRECATI AL GOLEM GIOCATORE "+ partita.getPlayer1()+" DAL GOLEM DEL GIOCATORE "+ partita.getPlayer2()+" NUMERO "+golem2+ " SONO " + danno2Tot);
+                System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem2+"MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer2()+" SONO " + danno2Tot);
                 System.out.println("VITA RIMASTA AL GOLEM "+partita.getPlayer1()+" E': " +partita.getPlayer1Golem().get(golem1).getVita());
                 //creazione e set di un nuovo golem
-                golem2++;
+                golem2++;//invocazione nuovo golem
                 danno2Tot = 0;
                 stmapaScelta = str_scelta;
                 do {
                     System.out.println(partita.getPlayer2() + stmapaScelta );
-                    partita.getPlayer2Golem().get(golem2).setPietre(acquisisciPietreGolem());
+                    partita.getPlayer2Golem().get(golem2).setPietre(acquisisciPietreGolem());//aquisizione pietre del nuovo golem schierato
                     stmapaScelta = str_rinscelta;
                 }while (controlloElementiGiocatori(golem1, golem2,false));//controllo pietre golem diverse
                 System.out.println(abb_capo);
@@ -242,7 +267,7 @@ public class Gestione {
      * @return valore di escape dal loop del main true nuova partita false esci
      */
     public boolean scelta() {
-        System.out.println("inserire carattere \n [ " +charUscita+" ] : se si vuole uscire \n [ "+charNuovo+" ] : se si vuole inziare una nuova partita ");
+        System.out.println(menu_scelta);
         char input = it.unibs.fp.mylib.InputDati.leggiChar("inserire");
         while(input != charUscita &&  input != charNuovo){//controllo dato in input
             input = it.unibs.fp.mylib.InputDati.leggiChar("rinserire");//rinserimento dato
@@ -250,29 +275,6 @@ public class Gestione {
         return input != charUscita;
     }
 
-    /**
-     * metodo utilizzato per stampare gli elementi della sacca
-     * divisi per elemnti con cancolo di quanti c'è ne sono
-     * @param sacca passaggio sacca partita
-     */
-    private void stampaSacca(ArrayList<String> sacca){
-        if(sacca.size()==0){//caso sacca vuota
-            System.out.println("SACCA VUOTA");
-            return;
-        }//_____________________________________________________________________________________________________________
-        String elmentoSacca = sacca.get(0);//lettura prima elemento sacca
-        int numeroRestante = 1;
-        for(int i = 1; i<sacca.size();i++){//ciclo che calcola in numero di elemnti restanti
-            if (elmentoSacca.equals(sacca.get(i))){
-                numeroRestante++;
-            }else{//se diverso inizializzo il conto degli elenti
-                System.out.println("\t" + elmentoSacca +": "+ numeroRestante);
-                numeroRestante = 1;
-                elmentoSacca = sacca.get(i);
-            }
-        }
-        System.out.println("\t" + elmentoSacca +": "+ numeroRestante);
-    }
 
     /**
      * metodo che evita loop infinito in caso di scelta di pietre uguali tra i due giocatori
@@ -323,24 +325,45 @@ public class Gestione {
         do {
             String messaggio = "inserire nome pietra numero ";
             String messaggio1 = "r"+ messaggio;
+            String messaggio2 = "inserire codice pietra numero ";
             System.out.println(str_pietre);
             stampaSacca(partita.getSacca());
             String elemento;
             boolean isFind=true;
+            System.out.println(menu_inserimento_pietre);
+            char selezione;
             do {
-                elemento = it.unibs.fp.mylib.InputDati.leggiStringaNonVuota(messaggio + (elementi.size() + 1)); //lettura elemento
-                for (String nomeElemento :partita.getNomeElementi()) {//ricerca elemento in arraylist elementi
-                    if(elemento.equals(nomeElemento)) isFind = false;
+                selezione = it.unibs.fp.mylib.InputDati.leggiChar("inserire carattere");
+            }while(selezione != charCodeIn && selezione != charNomeIn);
+            if(selezione == charNomeIn) {
+                do {
+                    elemento = it.unibs.fp.mylib.InputDati.leggiStringaNonVuota(messaggio + (elementi.size() + 1)+" "); //lettura elemento
+                    for (String nomeElemento : partita.getNomeElementi()) {//ricerca elemento in arraylist elementi
+                        if (elemento.equals(nomeElemento)) isFind = false;
+                    }
+                    messaggio = messaggio1;
+                } while (isFind);
+                for (int i = 0; i < partita.getSacca().size(); i++) {//ricerca elemento in sacca
+                    if (elemento.equals(partita.getSacca().get(i))) {
+                        elementi.add(elemento); //aggiunta ad elemnti
+                        partita.getSacca().remove(i); //rimozione da sacca
+                        break;
+                    }
                 }
-                messaggio = messaggio1;
-            }while (isFind);
-            int i;
-            for (i = 0; i < partita.getSacca().size(); i++) {//ricerca elemento in sacca
-                if (elemento.equals(partita.getSacca().get(i))) {
-                    elementi.add(elemento); //aggiunta ad elemnti
-                    partita.getSacca().remove(i); //rimozione da sacca
-                    break;
+            }else {
+                int intE;
+                do {
+                    intE = it.unibs.fp.mylib.InputDati.leggiIntero(messaggio2 + (elementi.size() + 1)+" ");
+                } while (intE >= partita.getNumeroElementi() && intE < 0);
+                elemento = partita.getNomeElementi().get(intE);
+                for (int i = 0; i < partita.getSacca().size(); i++) {//ricerca elemento in sacca
+                    if (elemento.equals(partita.getSacca().get(i))) {
+                        elementi.add(elemento); //aggiunta ad elemnti
+                        partita.getSacca().remove(i); //rimozione da sacca
+                        break;
+                    }
                 }
+
             }
         }while(elementi.size() != partita.getNumeroPietreGolem());//controllo elementi lungo come numero pietre golem
         return elementi;
@@ -392,4 +415,48 @@ public class Gestione {
             System.out.println(arrayElementi[i]);
         }
     }
+
+    /**
+     *metodo per stampare la vita che rimane al golem
+     * @param vita numero di vita che ha il golem
+     */
+    private void stampaVita(int vita) {
+        System.out.print('[');
+        for (int i = 0; i < partita.getVitaset(); i++){
+            if (i < vita) {
+                System.out.print(" * ");
+
+            } else {
+                System.out.print(" _ ");
+            }
+        }
+        System.out.print("]\n");
+    }
+
+    /**
+     * metodo utilizzato per stampare gli elementi della sacca
+     * divisi per elemnti con cancolo di quanti c'è ne sono
+     * @param sacca passaggio sacca partita
+     */
+    private void stampaSacca(ArrayList<String> sacca){
+        if(sacca.size()==0){//caso sacca vuota
+            System.out.println("SACCA VUOTA");
+            return;
+        }//_____________________________________________________________________________________________________________
+        String elmentoSacca = sacca.get(0);//lettura prima elemento sacca
+        int numero = 0;
+        int numeroRestante = 1;
+        for(int i = 1; i<sacca.size();i++){//ciclo che calcola in numero di elemnti restanti
+            if (elmentoSacca.equals(sacca.get(i))){
+                numeroRestante++;
+            }else{//se diverso inizializzo il conto degli elenti
+                System.out.println("\t [ " + numero +" ]--> "+ elmentoSacca +": "+ numeroRestante);
+                numero++;
+                numeroRestante = 1;
+                elmentoSacca = sacca.get(i);
+            }
+        }
+        System.out.println("\t [ " + numero +" ]--> "+ elmentoSacca +": "+ numeroRestante);
+    }
+
 }
