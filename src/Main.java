@@ -1,4 +1,5 @@
 public class Main {
+
     public static void main(String[] args) {
         Gestione gestioneFasi = new Gestione();
         do {
@@ -9,5 +10,7 @@ public class Main {
 
         }while(gestioneFasi.scelta());//scelta nuova partita o uscita
         System.out.println("--- FASE DI GIOCO TERMINATA ---");
+
     }
+
 }
