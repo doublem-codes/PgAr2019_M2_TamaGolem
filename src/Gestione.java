@@ -196,7 +196,7 @@ public class Gestione {
                     vincitore = partita.getPlayer2();
                     perdente = partita.getPlayer1();
                     System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem1+" MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer1()+" SONO " + danno1Tot);
-                    System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem2+"MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer2()+" SONO " + danno2Tot);
+                    System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem2+" MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer2()+" SONO " + danno2Tot);
                     break;
                 }
 
@@ -223,10 +223,10 @@ public class Gestione {
                     perdente = partita.getPlayer2();
                     vincitore = partita.getPlayer1();
                     System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem1+" MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer1()+" SONO " + danno1Tot);
-                    System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem2+"MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer2()+" SONO " + danno2Tot);
+                    System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem2+" MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer2()+" SONO " + danno2Tot);
                     break;
                 }
-                System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem2+"MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer2()+" SONO " + danno2Tot);
+                System.out.println("\nDANNI FATTI DAL GOLEM NUMERO "+golem2+" MENTRE ERA INVITA DEL GIOCATORE "+ partita.getPlayer2()+" SONO " + danno2Tot);
                 System.out.println("VITA RIMASTA AL GOLEM "+partita.getPlayer1()+" E': " +partita.getPlayer1Golem().get(golem1).getVita());
                 //creazione e set di un nuovo golem
                 golem2++;//invocazione nuovo golem

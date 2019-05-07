@@ -64,7 +64,7 @@ public class Partita {
 
     /**
      * metodo per la generazione del numero di  pietre per elememto sacca
-     * @returnnumero di  pietre per elememto sacca
+     * @return numero di  pietre per elememto sacca
      */
     private int setNumeroPietreTipoSacca() {
         return(this. numeroPietreSacca / this.numeroElementi);
@@ -102,7 +102,7 @@ public class Partita {
 
     /**
      * metodo per la generazione dei numero di pietre per ogni golem
-     * @returnnumero di pietre per ogni golem
+     * @return numero di pietre per ogni golem
      */
     public int setNumeroPietreGolem() {
         return (int)Math.ceil((((double) this.numeroElementi+1)/3)) + 1;
