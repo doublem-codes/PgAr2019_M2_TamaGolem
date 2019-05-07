@@ -177,11 +177,13 @@ public class Equilibrio {
             for(int i = index+1; i < iterazioneElementi.length; i++){
                 sumAfter = sumAfter+iterazioneElementi[zeroIndex][i];
             }
-
+            /*
+                Se la somma prima dell'elemento è nei limiti ed è diverso da
+                zero modifico il valore come la somma degli elementi prima
+                più quelli dopo
+             */
             if(sumAfter+sumBefore != 0 && sumAfter+sumBefore >= -(iterazioneElementi.length-1) && (sumAfter + sumBefore) <= (iterazioneElementi.length-1)){
                 iterazioneElementi[zeroIndex][index]=-(sumAfter+sumBefore);
-            }else if (sumAfter+sumBefore == 0) {
-                return;
             } else{
                 isCorrect = true;
             }
