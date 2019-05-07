@@ -265,9 +265,9 @@ public class Gestione {
      */
     public boolean scelta() {
         System.out.println(menu_scelta);
-        char input = it.unibs.fp.mylib.InputDati.leggiChar("inserire");
+        char input = Character.toUpperCase(it.unibs.fp.mylib.InputDati.leggiChar("inserire"));
         while(input != charUscita &&  input != charNuovo){//controllo dato in input
-            input = it.unibs.fp.mylib.InputDati.leggiChar("rinserire");//rinserimento dato
+            input = Character.toUpperCase(it.unibs.fp.mylib.InputDati.leggiChar("rinserire"));//rinserimento dato
         }
         return input != charUscita;
     }
@@ -321,9 +321,9 @@ public class Gestione {
 
         do {
             String messaggio = "inserire nome pietra numero ";
-            String messaggio1 = "re"+ messaggio;
+            String messaggio1 = "re"+ messaggio +"perchè sbagliato ";
             String messaggio2 = "inserire codice pietra numero ";
-            String messaggio3 = "re"+ messaggio2;
+            String messaggio3 = "re"+ messaggio2+"perchè sbagliato ";
             System.out.println(str_pietre);
             stampaSacca(partita.getSacca());
             String elemento;
@@ -332,17 +332,27 @@ public class Gestione {
 
             char selezione;//carattere per scegliere il tipo di inserimento della pietra
             do {
-                selezione = it.unibs.fp.mylib.InputDati.leggiChar("inserire carattere");
+                selezione =Character.toUpperCase(it.unibs.fp.mylib.InputDati.leggiChar("inserire carattere"));
             }while(selezione != charCodeIn && selezione != charNomeIn);
 
             if(selezione == charNomeIn) {//aquisizione per nome
+
                 do {
                     elemento = it.unibs.fp.mylib.InputDati.leggiStringaNonVuota(messaggio + (elementi.size() + 1)+" ").toUpperCase(); //lettura elemento
                     for (String nomeElemento : partita.getNomeElementi()) {//ricerca elemento in arraylist elementi
-                        if (elemento.equals(nomeElemento)) isFind = false;
+                        if (elemento.equals(nomeElemento)) {
+                            for (String nomeInSacca : partita.getSacca()){
+                                if(elemento.equals(nomeInSacca)){
+                                    isFind = false;
+                                    break;
+                                }
+                            }
+                            if(!isFind)break;
+                        }
                     }
                     messaggio = messaggio1;
                 } while (isFind);
+
                 for (int i = 0; i < partita.getSacca().size(); i++) {//ricerca elemento in sacca
                     if (elemento.equals(partita.getSacca().get(i))) {
                         elementi.add(elemento); //aggiunta ad elemnti
@@ -352,15 +362,25 @@ public class Gestione {
                 }
             }else {//aquisizione per codice
                 int intE;
+
                 do {
+
                     do {
                         intE = it.unibs.fp.mylib.InputDati.leggiIntero(messaggio2 + (elementi.size() + 1) + " ");
-                    } while (intE >= partita.getNumeroElementi() && intE < 0);
+                        messaggio2=messaggio3;
+                    } while (!(intE>=0 && intE<partita.getNumeroElementi()));
                     elemento = partita.getNomeElementi().get(intE);
                     for (String nomeElemento : partita.getNomeElementi()) {//ricerca elemento in arraylist elementi
-                        if (elemento.equals(nomeElemento)) isFind = false;
+                        if (elemento.equals(nomeElemento)) {
+                            for (String nomeInSacca : partita.getSacca()){
+                                if(elemento.equals(nomeInSacca)){
+                                    isFind = false;
+                                    break;
+                                }
+                            }
+                            if(!isFind)break;
+                        }
                     }
-                    messaggio2 = messaggio3;
                 }while(isFind);
                 for (int i = 0; i < partita.getSacca().size(); i++) {//ricerca elemento in sacca
                     if (elemento.equals(partita.getSacca().get(i))) {
@@ -410,7 +430,7 @@ public class Gestione {
      */
     private ArrayList<String> aquisiciElementiAutomatico(int numeroElementi){
         ArrayList<String> elementi = new ArrayList<>();
-        for (int index =0 ; index < numeroElementi ; index++){//aquisizione arraylist di elementi
+        for (int index = 0 ; index < numeroElementi ; index++){//aquisizione arraylist di elementi
             elementi.add(arrayElementi[index]);//essendo elemnto diverso lo inserisco nell'arraylist
         }
         return elementi;
@@ -450,24 +470,26 @@ public class Gestione {
      * divisi per elemnti con cancolo di quanti c'è ne sono
      * @param sacca passaggio sacca partita
      */
+
     private void stampaSacca(ArrayList<String> sacca){
         if(sacca.size()==0){//caso sacca vuota
             System.out.println("SACCA VUOTA");
             return;
         }
-        String elmentoSacca = sacca.get(0);//lettura prima elemento sacca
-        int numero = 0;
+        String elementoSacca = sacca.get(0);//lettura prima elemento sacca
+        int numero = partita.getIndiceElemento(elementoSacca);
         int numeroRestante = 1;
         for(int i = 1; i<sacca.size();i++){//ciclo che calcola in numero di elemnti restanti
-            if (elmentoSacca.equals(sacca.get(i))){
+            if (elementoSacca.equals(sacca.get(i))){
                 numeroRestante++;
             }else{//se diverso inizializzo il conto degli elenti
-                System.out.println("\t [ " + numero +" ]--> "+ elmentoSacca +": "+ numeroRestante);//stampa codice elemnto e numero pietre restanti
-                numero++;
+                System.out.println("\t [ " + numero +" ]--> "+ elementoSacca +": "+ numeroRestante);//stampa codice elemnto e numero pietre restanti
+                elementoSacca = sacca.get(i);//aggiornamento nuovo elemento
+                numero = partita.getIndiceElemento(elementoSacca);
                 numeroRestante = 1;
-                elmentoSacca = sacca.get(i);//aggiornamento nuovo elemento
+
             }
         }
-        System.out.println("\t [ " + numero +" ]--> "+ elmentoSacca +": "+ numeroRestante);//stampa codice elemnto e numero pietre restanti
+        System.out.println("\t [ " + numero +" ]--> "+ elementoSacca +": "+ numeroRestante);//stampa codice elemnto e numero pietre restanti
     }
 }

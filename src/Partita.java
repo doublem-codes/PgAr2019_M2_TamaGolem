@@ -182,6 +182,22 @@ public class Partita {
 
     /**
      *
+     * @param elementopass nome elmento
+     * @return posizione nella arrayelemento dove si trova l'elemento
+     */
+    public int getIndiceElemento(String elementopass){
+        int index = 0;
+        for (String elemento : this.nomeElementi){
+            if(elementopass.equals(elemento)){
+                return index;
+            }
+            index++;
+        }
+        return 0;
+    }
+
+    /**
+     *
      * @param elemento nome elmento
      * @return posizione nella sacca dove si trova l'elemento
      */
@@ -195,6 +211,7 @@ public class Partita {
         }
         return 0;
     }
+
 
     /**
      * funzione get numero elementi
