@@ -1,12 +1,14 @@
 import java.util.ArrayList;
 import java.util.Random;
 
+
 public class Equilibrio {
     Random random = new Random();
     MatrixAdministration matrixAdministration=new MatrixAdministration();
     ArrayAdministration arrayAdministration = new ArrayAdministration();
     private int[][] iterazioneElementi;
     private boolean isCorrect=false;
+
 
     /**
      *
@@ -72,30 +74,23 @@ public class Equilibrio {
 
     //Inserisco i valori di danneggia nella matrice
     private int[] danneggia(int[] array) {
-        int numElementiDanneggia = random.nextInt(array.length-2)+1;
-        int numMaxPotenza ;
-        int pos1, pos2;
+        int numElementiDanneggia = random.nextInt(array.length - 2) + 1;
+        int numMaxPotenza;
+        int pos1, pos2=0;
         int numElementi = array.length;
         do {
-            numMaxPotenza = numElementi-1;
+            numMaxPotenza = numElementi - 1;
             pos1 = random.nextInt(array.length);
-            if(array[pos1] == (array.length+1)){
+            if (array[pos1] == (array.length + 1)) {
                 array[pos1] = random.nextInt(numMaxPotenza) + 1;
-            }else{
-                if(pos1 == 0){
-                    pos2 = pos1+1;
-                }else{
-                    pos2 = pos1-1;
+            } else if (array[pos2] == 0) {
+                if (pos2 == 0) {
+                    pos2 = pos2 + 1;
+                } else {
+                    pos2 = pos2 - 1;
                 }
-                if(array[pos2] == 0){
-                    if(pos2 == 0){
-                        pos2 = pos2+1;
-                    }else{
-                        pos2 = pos2-1;
-                    }
-                }
-                array[pos2] = random.nextInt(numMaxPotenza) + 1;
             }
+            array[pos2] = random.nextInt(numMaxPotenza) + 1;
             numElementi--;
             numElementiDanneggia--;
 
@@ -227,6 +222,7 @@ public class Equilibrio {
                 index = cercaMaggiore(iterazioneElementi[zeroIndex], true,zeroIndex);
             }
         }else {
+            //genero un indice tra zero index < index <= lunghezza totale dell'array
             index = zeroIndex + random.nextInt((iterazioneElementi.length)-zeroIndex);
         }
         return index;
