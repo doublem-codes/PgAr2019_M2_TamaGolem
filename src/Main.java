@@ -1,8 +1,15 @@
 
+/**
+ * TAMAGOLEM
+ *
+ * @author M2
+ * @version V2.0
+ */
+
 public class Main {
 
     public static void main(String[] args) {
-        Gestione gestioneFasi = new Gestione();
+        Gestione gestioneFasi = new Gestione();//new classe gestione
         do {
 
             gestioneFasi.fase1();//inizializzazione partita
