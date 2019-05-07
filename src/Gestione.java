@@ -1,9 +1,12 @@
+
+
 import java.util.ArrayList;
 /**
  * classe utilizzata per giocare la partita
  * e per gestire l'iterazione dei vari golem tramite un equilibrio che viene generato casualmente
  */
 public class Gestione {
+
 
     //inserimento stringhe di comunicazione
     private static String init_par = "\n--- INIZIALIZZAZIONE PARTITA ---\n";
