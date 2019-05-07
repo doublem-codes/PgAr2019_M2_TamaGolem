@@ -1,6 +1,3 @@
-import it.unibs.fp.mylib.InputDati;
-import it.unibs.fp.mylib.Matrix;
-
 import java.util.ArrayList;
 import java.util.Random;
 
