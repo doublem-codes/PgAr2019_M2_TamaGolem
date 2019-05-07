@@ -1,12 +1,9 @@
-
-
 import java.util.ArrayList;
 /**
  * classe utilizzata per giocare la partita
  * e per gestire l'iterazione dei vari golem tramite un equilibrio che viene generato casualmente
  */
 public class Gestione {
-
 
     //inserimento stringhe di comunicazione
     private static String init_par = "\n--- INIZIALIZZAZIONE PARTITA ---\n";
@@ -40,8 +37,8 @@ public class Gestione {
     private static char charNomeIn = 'N';//carattere inserimento per nome
     private static char charCodeIn = 'C';//carattere inserimento per codice
     private static String menu_inserimento_pietre = "SI VUOLE INSERIRE PIETRA PER :" +//menu per scelgliere il tipo di inserimento
-                                                    "\n -["+charNomeIn+"] : PER INSERIRE PIETRA TRAMITE CODICE TRA PARENTESI" +
-                                                    "\n -["+charCodeIn+"] :PER INSERIRE PIETRA TRAMITE NOME ";
+                                                    "\n -["+charCodeIn+"] : PER INSERIRE PIETRA TRAMITE CODICE TRA PARENTESI" +
+                                                    "\n -["+charNomeIn+"] :PER INSERIRE PIETRA TRAMITE NOME ";
     private static char charUscita = 'E';//carattere uscita
     private static char charNuovo = 'P';//carattere nuova partita
     private static String menu_scelta = "--- INSERIRE ---" + //menu scelta fina per nuova partita o exit
@@ -86,13 +83,13 @@ public class Gestione {
         char inMenu;
         if(numeroElementi >arrayElementi.length){
             System.out.println(menu_aquisizione_elementi);
-             inMenu = it.unibs.fp.mylib.InputDati.leggiChar("inserire");
+             inMenu = Character.toUpperCase(it.unibs.fp.mylib.InputDati.leggiChar("inserire"));
             while(inMenu != charStampaElementi && inMenu != charInserimentoManuale){//controllo dato in input
                 inMenu = it.unibs.fp.mylib.InputDati.leggiChar("rinserire");//rinserimento dato
             }
         }else{
             System.out.println(menu_aquisizione_elementi + menu_aquisizione_elementi_automatico);
-             inMenu = it.unibs.fp.mylib.InputDati.leggiChar("inserire");
+             inMenu = Character.toUpperCase(it.unibs.fp.mylib.InputDati.leggiChar("inserire"));
             while(inMenu != charStampaElementi &&  inMenu != charInserimentoAutomatico && inMenu != charInserimentoManuale){//controllo dato in input
                 inMenu = it.unibs.fp.mylib.InputDati.leggiChar("rinserire");//rinserimento dato
             }
@@ -324,9 +321,9 @@ public class Gestione {
 
         do {
             String messaggio = "inserire nome pietra numero ";
-            String messaggio1 = "r"+ messaggio;
+            String messaggio1 = "re"+ messaggio;
             String messaggio2 = "inserire codice pietra numero ";
-            String messaggio3 = "r"+ messaggio2;
+            String messaggio3 = "re"+ messaggio2;
             System.out.println(str_pietre);
             stampaSacca(partita.getSacca());
             String elemento;
